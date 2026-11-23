@@ -168,7 +168,11 @@ a{color:inherit}
 .prod h3{font-size:1.05rem;letter-spacing:-.02em;margin:2px 0 4px;line-height:1.2}
 .prod p{margin:0;color:var(--ink-2);font-size:.9rem;line-height:1.45}
 .prod .use{display:inline-flex;margin-top:8px;font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--forest-3);background:#E8F3EC;border-radius:99px;padding:4px 10px}
-.contact{margin:26px 0 0;border-radius:28px;padding:24px 20px 20px}
+.malin{margin:24px 0 0;background:var(--card);border:1.5px solid var(--mint);border-radius:22px;padding:18px;box-shadow:var(--shadow);animation:up .5s ease both .6s}
+.malin .mono{color:var(--forest-3)}
+.malin b{display:block;font-size:1.3rem;letter-spacing:-.03em;margin:6px 0 4px}
+.malin p{margin:0;color:var(--ink-2);font-size:.92rem}
+.contact{margin:18px 0 0;border-radius:28px;padding:24px 20px 20px}
 .contact h3{font-size:1.6rem;color:#fff;margin:10px 0 8px}
 .contact p{color:var(--on-dark-2);margin:0 0 18px;font-size:.95rem}
 .contact .mono{color:var(--mint)}
@@ -290,6 +294,8 @@ a{color:inherit}
   <div class="inner">
     <div class="routine" id="routine"></div>
 
+    <div class="malin" id="malin"></div>
+
     <div class="contact dark">
       <span class="mono">Étape suivante</span>
       <h3>On l'ajuste ensemble ?</h3>
@@ -328,43 +334,52 @@ const CONFIG = {
   prenom: "Valentin",
   role: "Conseiller indépendant LR",
   photo: "",                        // ex. "moi.jpg" (fichier à côté de index.html), vide = initiale
-  whatsapp: "33600000000",          // numéro au format international, sans + ni espaces
-  telephone: "+33600000000",        // pour les boutons Appeler / SMS
-  afficherPrix: true                // false = on cache le coût par jour de la routine
+  whatsapp: "33636470131",          // numéro au format international, sans + ni espaces
+  telephone: "+33636470131"         // pour les boutons Appeler / SMS
 };
 
 /* =========================================================
    LES PRODUITS
-   - parJour : coût moyen par jour en euros (prix du produit ÷ nombre de jours qu'il dure).
-     ATTENTION : VALEURS PROVISOIRES À VÉRIFIER avec vos vrais prix.
+   - mois : prix catalogue pour un mois d'utilisation (ne s'affiche jamais sur la page,
+     sert seulement à choisir des produits qui rentrent dans le budget de la personne).
+   - abo : prix de l'abonnement mensuel, s'il existe. Sert au bloc « Consommer malin »
+     (économie = mois - abo) et à composer la routine.
    - groupe : on ne propose jamais deux produits du même groupe
      (un seul gel Aloe Vera, un seul Mind Master).
    - moment : matin / journée / soir
    ATTENTION : Formulations prudentes : pas de « soigne », « guérit », « fait maigrir ».
    ========================================================= */
 const P = {
-  aloePeche:   { nom:"Gel à boire Aloe Vera Pêche", groupe:"aloe", parJour:1.3, moment:"matin", code:"AV",
+  // gels à boire : 46 € les 10 jours, soit 138 € par mois ; abonnement 70 € par mois
+  aloePeche:   { nom:"Gel à boire Aloe Vera Pêche", groupe:"aloe", mois:138, abo:70, moment:"matin", code:"AV",
                  desc:"La base de la routine LR, avec une note fruitée douce. Idéal pour commencer.", use:"Un petit verre le matin" },
-  aloeMiel:    { nom:"Gel à boire Aloe Vera Miel", groupe:"aloe", parJour:1.3, moment:"matin", code:"AV",
+  aloeMiel:    { nom:"Gel à boire Aloe Vera Miel", groupe:"aloe", mois:138, abo:70, moment:"matin", code:"AV",
                  desc:"L'aloe vera associé au miel, pour une routine santé au naturel.", use:"Un petit verre le matin" },
-  aloeFreedom: { nom:"Gel à boire Aloe Vera Freedom", groupe:"aloe", parJour:1.5, moment:"matin", code:"AV",
+  aloeFreedom: { nom:"Gel à boire Aloe Vera Freedom", groupe:"aloe", mois:138, abo:70, moment:"matin", code:"AV",
                  desc:"La formule pensée pour les articulations et la mobilité.", use:"Un petit verre le matin" },
-  // prix boutique LR : 19,29 € les 7 jours
-  mindRouge:   { nom:"Mind Master Formula Red", groupe:"mind", parJour:2.76, moment:"matin", code:"MM",
+  // prix boutique LR : 19,29 € les 7 jours, soit 82,70 € par mois
+  mindRouge:   { nom:"Mind Master Formula Red", groupe:"mind", mois:82.7, moment:"matin", code:"MM",
                  desc:"Avec vitamines et oligo-éléments, pour l'énergie au quotidien.", use:"Le matin" },
-  // prix boutique LR : 24,79 € les 7 jours
-  mindGold:    { nom:"Mind Master Formula Gold", groupe:"mind", parJour:3.54, moment:"matin", code:"MM",
+  // prix boutique LR : 24,79 € les 7 jours, soit 106,20 € par mois
+  mindGold:    { nom:"Mind Master Formula Gold", groupe:"mind", mois:106.2, moment:"matin", code:"MM",
                  desc:"Au curcuma et au thé blanc, pour les journées les plus exigeantes.", use:"Le matin" },
-  // prix boutique LR : 35,69 € les 14 sticks
-  mindExtreme: { nom:"Mind Master Extreme", groupe:"mind", parJour:2.55, moment:"matin", code:"MM",
+  // prix boutique LR : 35,69 € les 14 sticks, soit 76,50 € par mois
+  mindExtreme: { nom:"Mind Master Extreme", groupe:"mind", mois:76.5, moment:"matin", code:"MM",
                  desc:"En sticks faciles à emporter, pour les gros efforts et les sportifs.", use:"Un stick avant l'effort" },
-  vitaActive:  { nom:"Vita Active", groupe:"vita", parJour:0.9, moment:"matin", code:"VA",
+  // ATTENTION : prix à vérifier
+  vitaActive:  { nom:"Vita Active", groupe:"vita", mois:30, moment:"matin", code:"VA",
                  desc:"Un concentré de fruits rouges riche en vitamines.", use:"Le matin" },
-  superOmega:  { nom:"Super Omega", groupe:"omega", parJour:0.8, moment:"journée", code:"Ω3",
+  // 49 € les 60 gélules, 3 par jour, soit 73,50 € par mois
+  superOmega:  { nom:"Super Omega", groupe:"omega", mois:73.5, moment:"journée", code:"Ω3",
                  desc:"Des oméga-3 pour compléter l'alimentation.", use:"Pendant un repas" },
-  figuActive:  { nom:"Shakes Figu Active", groupe:"figu", parJour:2.5, moment:"journée", code:"FA",
+  // 41,39 € pour un mois
+  proBalance:  { nom:"Pro Balance", groupe:"proBalance", mois:41.4, moment:"journée", code:"PB",
+                 desc:"Minéraux et oligo-éléments basiques, pour l'équilibre au quotidien.", use:"Au cours de la journée" },
+  // 56 € les 15 jours, soit 112 € par mois
+  figuActive:  { nom:"Shakes Figu Active", groupe:"figu", mois:112, moment:"journée", code:"FA",
                  desc:"Des shakes complets et gourmands, à utiliser selon votre objectif.", use:"Selon votre objectif" },
-  zeitgard:    { nom:"Zeitgard", groupe:"zeitgard", parJour:1.5, moment:"soir", code:"ZG",
+  // ATTENTION : prix à vérifier
+  zeitgard:    { nom:"Zeitgard", groupe:"zeitgard", mois:45, moment:"soir", code:"ZG",
                  desc:"La routine soin du visage pour une peau plus lisse et éclatante.", use:"Le soir" }
 };
 
@@ -378,8 +393,8 @@ const QUESTIONS = [
       { k:"energie",   label:"Énergie",              sub:"Je me sens vite à plat", pts:{ mindRouge:6, vitaActive:4, aloePeche:2 } },
       { k:"peau",      label:"Peau",                 sub:"Éclat, rides, fermeté", pts:{ zeitgard:6, aloePeche:2, superOmega:2 } },
       { k:"shape",     label:"Shape · Body mission",  sub:"Perte de poids, rééquilibrage, prise de masse", pts:{ figuActive:3, aloePeche:3, vitaActive:1, superOmega:1 } },
-      { k:"biohacking",  label:"Biohacking",           sub:"Concentration, performance, optimiser ma santé", pts:{ mindGold:6, superOmega:4, vitaActive:2 } },
-      { k:"naturel",   label:"Santé au naturel",     sub:"Prendre soin de moi simplement", pts:{ aloeMiel:5, vitaActive:3, superOmega:3 } },
+      { k:"biohacking",  label:"Biohacking",           sub:"Concentration, performance, optimiser ma santé", pts:{ mindGold:6, superOmega:4, proBalance:3, vitaActive:2 } },
+      { k:"naturel",   label:"Santé au naturel",     sub:"Prendre soin de moi simplement", pts:{ aloeMiel:5, vitaActive:3, superOmega:3, proBalance:2 } },
       { k:"articul",   label:"Articulations",        sub:"Mobilité, raideurs, souplesse", pts:{ aloeFreedom:7, superOmega:3 } }
     ]},
   { id:"mission", si: a => a.objectif && a.objectif.k==="shape",
@@ -395,7 +410,7 @@ const QUESTIONS = [
   { id:"metier", titre:"Que faites-vous dans la vie ?", hint:"",
     opts:[
       { k:"bureau",  label:"Bureau, écrans",         sub:"Beaucoup assis·e, beaucoup de concentration", pts:{ mindGold:2, superOmega:2 } },
-      { k:"physique",  label:"Métier physique",        sub:"Debout, port de charges, terrain", pts:{ aloeFreedom:3, mindRouge:2 } },
+      { k:"physique",  label:"Métier physique",        sub:"Debout, port de charges, terrain", pts:{ aloeFreedom:3, mindRouge:2, proBalance:2 } },
       { k:"parent",  label:"Parent à temps plein", sub:"Les enfants, la maison, sans pause", pts:{ mindRouge:2, vitaActive:2 } },
       { k:"entrepreneur",  label:"Indépendant·e, entrepreneur·e", sub:"Des journées sans fin", pts:{ mindGold:3, mindRouge:1 } },
       { k:"etudiant",  label:"Étudiant·e",             sub:"Cours, révisions, examens", pts:{ mindGold:2, vitaActive:1 } },
@@ -411,8 +426,8 @@ const QUESTIONS = [
     opts:[
       { k:"0",  label:"Aucune pour l'instant", sub:"", pts:{ aloePeche:1 } },
       { k:"1",  label:"1 à 2 séances",        sub:"", pts:{ vitaActive:1 } },
-      { k:"3",  label:"3 à 4 séances",        sub:"", pts:{ mindExtreme:3, superOmega:1, aloeFreedom:1 } },
-      { k:"5",  label:"5 séances ou plus",    sub:"", pts:{ mindExtreme:6, aloeFreedom:2, superOmega:2 } }
+      { k:"3",  label:"3 à 4 séances",        sub:"", pts:{ mindExtreme:3, proBalance:2, superOmega:1, aloeFreedom:1 } },
+      { k:"5",  label:"5 séances ou plus",    sub:"", pts:{ mindExtreme:6, proBalance:3, aloeFreedom:2, superOmega:2 } }
     ]},
   { id:"moment", titre:"Quel est le moment le plus dur de votre journée ?", hint:"",
     opts:[
@@ -422,12 +437,12 @@ const QUESTIONS = [
       { k:"concentr",  label:"Rester concentré·e",        sub:"Je décroche vite", pts:{ mindGold:3, superOmega:2 } },
       { k:"aucun",   label:"Aucun, tout roule",         sub:"", pts:{} }
     ]},
-  { id:"budget", titre:"Quel budget bien-être par jour ?", hint:"Moins qu'un café ? Plus ? On adapte la routine à vous.",
+  { id:"budget", titre:"Quel budget bien-être par mois ?", hint:"Avec les abonnements et les gammes, on optimise chaque euro.",
     opts:[
-      { k:"1", label:"Environ 1,50 € par jour", sub:"Soit environ 45 € par mois · l'essentiel", max:1.5 },
-      { k:"2", label:"Environ 3 € par jour",    sub:"Soit environ 90 € par mois · une vraie routine", max:3 },
-      { k:"3", label:"Environ 5 € par jour",    sub:"Soit environ 150 € par mois · la routine complète", max:5 },
-      { k:"4", label:"Plus de 5 € par jour",    sub:"Je veux le meilleur pour moi", max:8 }
+      { k:"1", label:"Moins de 80 € par mois",  sub:"L'essentiel pour bien commencer", court:"Moins de 80 € / mois",  max:80 },
+      { k:"2", label:"80 à 150 € par mois",     sub:"Une vraie routine",                court:"80 à 150 € / mois",    max:150 },
+      { k:"3", label:"150 à 250 € par mois",    sub:"La routine complète",              court:"150 à 250 € / mois",   max:250 },
+      { k:"4", label:"Plus de 250 € par mois",  sub:"Je veux le meilleur pour moi",     court:"Plus de 250 € / mois", max:400 }
     ]}
 ];
 
@@ -440,7 +455,6 @@ const TITRES = {
    Fonctionnement (pas besoin de toucher)
    ========================================================= */
 const $ = id => document.getElementById(id);
-const euros = n => n.toFixed(2).replace(".", ",") + " €";
 const wait = ms => new Promise(r => setTimeout(r, ms));
 const calme = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let i = 0, answers = {}, dernier = null;
@@ -491,19 +505,20 @@ function choisir(){
   ["aloePeche", "aloeMiel", "aloeFreedom"].forEach(k => score[k] = (score[k] || 0) + 2);
   const max = answers.budget.max * 1.1;   // petite tolérance de 10 %
   const ordre = Object.entries(score).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).map(([k]) => k);
+  const cout = p => p.abo || p.mois;   // on compose avec le prix le plus malin
   const picks = [], groupes = new Set(); let total = 0;
   // body mission : les shakes Figu Active sont toujours proposés, avec l'utilisation adaptée
   if (answers.mission){
-    picks.push({k:"figuActive", ...P.figuActive, use:answers.mission.use}); groupes.add("figu"); total += P.figuActive.parJour;
+    picks.push({k:"figuActive", ...P.figuActive, use:answers.mission.use}); groupes.add("figu"); total += cout(P.figuActive);
   }
   for (const k of ordre){
     const p = P[k];
     if (!p || groupes.has(p.groupe)) continue;
-    if (total + p.parJour > max) continue;
-    picks.push({k, ...p}); groupes.add(p.groupe); total += p.parJour;
+    if (total + cout(p) > max) continue;
+    picks.push({k, ...p}); groupes.add(p.groupe); total += cout(p);
   }
   // si rien ne rentre dans le budget, on propose quand même le produit le plus adapté
-  if (!picks.length && ordre.length){ const k = ordre[0]; picks.push({k, ...P[k]}); total = P[k].parJour; }
+  if (!picks.length && ordre.length){ const k = ordre[0]; picks.push({k, ...P[k]}); total = cout(P[k]); }
   return { picks, total };
 }
 
@@ -551,12 +566,7 @@ function result(){
     ["Besoin", besoin], ["Rythme", answers.rythme.label], ["Sport", answers.sport.label]
   ];
   let html = tiles.map(([l, v], n) => `<div class="tile" style="animation-delay:${n*80}ms"><span class="mono">${l}</span><b>${v}</b></div>`).join("");
-  if (CONFIG.afficherPrix){
-    const ratio = Math.min(100, total / answers.budget.max * 100);
-    html += `<div class="tile" style="animation-delay:240ms"><span class="mono">Votre routine</span><b>≈ ${euros(total)} / jour</b><div class="meter"><i data-w="${ratio}"></i></div></div>`;
-  } else {
-    html += `<div class="tile" style="animation-delay:240ms"><span class="mono">Moment clé</span><b>${answers.moment.label}</b></div>`;
-  }
+  html += `<div class="tile" style="animation-delay:240ms"><span class="mono">Budget</span><b>${answers.budget.court}</b></div>`;
   $("tiles").innerHTML = html;
 
   const groups = [["matin", "Matin"], ["journée", "Journée"], ["soir", "Soir"]];
@@ -571,6 +581,16 @@ function result(){
       </div>`).join("");
   }).join("");
 
+  const abos = picks.filter(p => p.abo);
+  const eco = Math.round(abos.reduce((t, p) => t + (p.mois - p.abo), 0));
+  $("malin").innerHTML = abos.length
+    ? `<span class="mono">Consommer malin</span>
+       <b>Économisez environ ${eco} € par mois</b>
+       <p>Avec l'abonnement mensuel ${abos.map(p => p.nom.replace("Gel à boire ", "")).join(", ")}, plutôt qu'à l'achat à l'unité. Et sur la gamme complète, je vous fais une offre sur mesure.</p>`
+    : `<span class="mono">Consommer malin</span>
+       <b>Une offre sur mesure</b>
+       <p>Les gammes complètes et les abonnements reviennent moins cher que l'achat à l'unité. Je vous propose la formule la plus avantageuse pour vous.</p>`;
+
   $("contactText").textContent = `Je suis ${CONFIG.prenom}. Laissez-moi vos coordonnées : je vous recontacte personnellement avec les conseils d'utilisation et les offres du moment.`;
 
   const msg = `Bonjour ${CONFIG.prenom} ! J'ai fait le diagnostic : ${titre.replace("Votre ", "ma ")}.\n` +
@@ -578,7 +598,7 @@ function result(){
     `Mon profil : ${["objectif","mission","metier","rythme","sport","moment"].filter(id => answers[id]).map(id => answers[id].label).join(" · ")}.\n` +
     `Mon budget : ${answers.budget.label.toLowerCase()}.\n` +
     `J'aimerais en savoir plus.`;
-  dernier = { titre, total: euros(total), routine: picks.map(p => p.nom),
+  dernier = { titre, total: Math.round(total) + " €", eco: abos.length ? eco + " €" : "", routine: picks.map(p => p.nom),
     profil: [["Besoin", answers.objectif.label], ["Mission", answers.mission && answers.mission.label],
              ["Activité", answers.metier.label], ["Rythme", answers.rythme.label], ["Sport", answers.sport.label],
              ["Moment difficile", answers.moment.label], ["Budget", answers.budget.label]].filter(([, v]) => v) };
@@ -588,8 +608,6 @@ function result(){
   $("smsBtn").href = `sms:${CONFIG.telephone}?&body=${encodeURIComponent(msg)}`;
 
   show("s-result");
-  requestAnimationFrame(() => requestAnimationFrame(() =>
-    document.querySelectorAll(".meter i").forEach(e => e.style.width = e.dataset.w + "%")));
 }
 
 $("lead").oninput = () => { $("leadMsg").textContent = ""; };

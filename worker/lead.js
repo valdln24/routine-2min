@@ -34,12 +34,15 @@ export async function handleLead(request, env) {
 
   const titre = clip(body.titre, 80);
   const total = clip(body.total, 20);
+  const eco = clip(body.eco, 20);
   const profil = Array.isArray(body.profil) ? body.profil.slice(0, 10).map(([k, v]) => [clip(k, 30), clip(v, 80)]) : [];
   const routine = Array.isArray(body.routine) ? body.routine.slice(0, 10).map(p => clip(p, 80)) : [];
 
   const lignes = [
     ["Prénom", prenom], ["Téléphone", telephone || "non renseigné"], ["Email", email || "non renseigné"],
-    ...profil, ["Coût estimé", total ? `${total} par jour` : ""]
+    ...profil,
+    ["Coût routine (avec abonnements)", total ? `≈ ${total} par mois` : ""],
+    ["Économie abonnement annoncée", eco ? `≈ ${eco} par mois` : ""]
   ].filter(([, v]) => v);
 
   const html = `
