@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Votre routine idéale en 2 minutes</title>
+<meta name="description" content="Répondez à 5 questions et découvrez la routine bien-être et beauté LR faite pour vous. Conseil gratuit et personnalisé.">
+<meta property="og:title" content="Votre routine idéale en 2 minutes">
+<meta property="og:description" content="5 questions, une routine sur mesure, un conseil personnalisé et gratuit.">
+<meta name="theme-color" content="#1F4D3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   RÉGLAGES : modifiez seulement cette partie
+   (le reste de la configuration est dans le script, en bas : CONFIG)
+   ========================================================= */
+:root{
+  --bg:#F6F3EC;          /* fond crème */
+  --surface:#FFFFFF;
+  --ink:#16211C;         /* texte */
+  --ink-2:#4B5751;
+  --ink-3:#86908B;
+  --line:#E6E0D3;
+  --green:#1F4D3A;       /* vert aloe foncé (couleur principale) */
+  --green-2:#2E6B52;
+  --green-soft:#E4EFE8;
+  --gold:#C9973E;        /* accent */
+  --wa:#1DA851;          /* bouton WhatsApp */
+  --radius:20px;
+  --shadow:0 1px 2px rgba(22,33,28,.05),0 18px 40px -24px rgba(22,33,28,.35);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;letter-spacing:-.02em;line-height:1.12;margin:0}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:560px;margin:0 auto;padding:20px 16px 48px}
+.screen{display:none;animation:in .35s ease}
+.screen.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* --- en-tête --- */
+.top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:700;flex:none;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.who{line-height:1.25}
+.who b{display:block;font-size:.98rem}
+.who span{font-size:.84rem;color:var(--ink-3)}
+
+/* --- accueil --- */
+.hero{background:var(--green);color:#fff;border-radius:28px;padding:30px 24px 26px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(201,151,62,.45),transparent 70%)}
+.pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border-radius:99px;padding:5px 12px;font-size:.8rem;font-weight:600;margin-bottom:16px}
+.hero h1{font-size:clamp(1.9rem,7.5vw,2.5rem);margin-bottom:12px;position:relative}
+.hero p{color:#D5E4DB;margin:0 0 22px;position:relative}
+.cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:16px;padding:17px 20px;font-weight:700;font-size:1.05rem;background:var(--gold);color:#1B1408;transition:transform .15s}
+.cta:active{transform:scale(.98)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 0}
+.step{background:var(--surface);border-radius:16px;padding:14px 12px;text-align:center;font-size:.84rem;color:var(--ink-2);box-shadow:var(--shadow)}
+.step b{display:block;font-family:Fraunces,serif;font-size:1.35rem;color:var(--green)}
+.reassure{margin:18px 4px 0;font-size:.85rem;color:var(--ink-3);text-align:center}
+
+/* --- questions --- */
+.progress{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:10px}
+.progress i{display:block;height:100%;width:0;background:var(--green);border-radius:99px;transition:width .35s ease}
+.qmeta{display:flex;justify-content:space-between;align-items:center;font-size:.84rem;color:var(--ink-3);margin-bottom:18px}
+.back{background:none;border:0;color:var(--ink-2);padding:6px 0;font-weight:600}
+.back[hidden]{visibility:hidden;display:inline}
+.q h2{font-size:clamp(1.45rem,6vw,1.8rem);margin-bottom:6px}
+.q .hint{color:var(--ink-2);margin:0 0 18px;font-size:.95rem}
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:center;gap:14px;text-align:left;width:100%;background:var(--surface);border:2px solid transparent;border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);color:var(--ink);transition:border-color .15s,transform .15s}
+.opt:active{transform:scale(.99)}
+.opt .ico{font-size:1.5rem;flex:none;width:32px;text-align:center}
+.opt b{display:block;font-weight:600}
+.opt small{color:var(--ink-3);font-size:.84rem}
+.opt.sel{border-color:var(--green);background:var(--green-soft)}
+.next{margin-top:16px}
+.next[disabled]{opacity:.4;cursor:default}
+
+/* --- résultat --- */
+.res-head{text-align:center;margin:6px 0 20px}
+.res-head .pill{background:var(--green-soft);color:var(--green)}
+.res-head h2{font-size:clamp(1.7rem,7vw,2.2rem);margin-bottom:8px}
+.res-head p{color:var(--ink-2);margin:0}
+.moment{margin:22px 0 10px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--green-2)}
+.moment::after{content:"";flex:1;height:1px;background:var(--line)}
+.prod{display:flex;gap:14px;background:var(--surface);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:10px}
+.prod .pic{width:58px;height:58px;border-radius:14px;background:var(--green-soft);display:grid;place-items:center;font-size:1.7rem;flex:none;overflow:hidden}
+.prod .pic img{width:100%;height:100%;object-fit:cover}
+.prod h3{font-family:Inter,sans-serif;font-size:1rem;font-weight:700;letter-spacing:0;margin-bottom:2px}
+.prod p{margin:0;color:var(--ink-2);font-size:.9rem}
+.prod .use{display:inline-block;margin-top:6px;font-size:.78rem;font-weight:600;color:var(--green-2);background:var(--green-soft);border-radius:99px;padding:2px 10px}
+.contact{margin-top:26px;background:var(--green);color:#fff;border-radius:28px;padding:24px 20px;box-shadow:var(--shadow)}
+.contact h3{font-size:1.35rem;margin-bottom:8px}
+.contact p{color:#D5E4DB;margin:0 0 18px;font-size:.95rem}
+.wa{background:var(--wa);color:#fff;text-decoration:none}
+.alt{display:flex;gap:10px;margin-top:10px}
+.alt a{flex:1;text-align:center;color:#fff;text-decoration:none;border:1.5px solid rgba(255,255,255,.35);border-radius:14px;padding:12px 8px;font-weight:600;font-size:.92rem}
+.restart{display:block;margin:18px auto 0;background:none;border:0;color:var(--ink-2);text-decoration:underline;font-size:.9rem}
+.legal{margin-top:26px;font-size:.76rem;color:var(--ink-3);text-align:center;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="avatar" id="avatar"></div>
+    <div class="who"><b id="sellerName"></b><span id="sellerRole"></span></div>
+  </header>
+
+  <!-- ACCUEIL -->
+  <section class="screen on" id="s-home">
+    <div class="hero">
+      <span class="pill">✨ Gratuit · 2 minutes</span>
+      <h1>Trouvez la routine LR faite pour vous</h1>
+      <p>5 questions rapides sur vos envies et votre rythme de vie. Vous recevez aussitôt une routine matin et soir, adaptée à vous.</p>
+      <button class="cta" id="start">Commencer le quiz →</button>
+    </div>
+    <div class="steps">
+      <div class="step"><b>1</b>Je réponds à 5 questions</div>
+      <div class="step"><b>2</b>Je découvre ma routine</div>
+      <div class="step"><b>3</b>On en parle ensemble</div>
+    </div>
+    <p class="reassure">Sans inscription. Aucune donnée enregistrée.</p>
+  </section>
+
+  <!-- QUESTION -->
+  <section class="screen" id="s-quiz">
+    <div class="progress"><i id="bar"></i></div>
+    <div class="qmeta"><button class="back" id="back">← Retour</button><span id="count"></span></div>
+    <div class="q">
+      <h2 id="qTitle"></h2>
+      <p class="hint" id="qHint"></p>
+      <div class="opts" id="opts"></div>
+      <button class="cta next" id="next" hidden>Continuer →</button>
+    </div>
+  </section>
+
+  <!-- RÉSULTAT -->
+  <section class="screen" id="s-result">
+    <div class="res-head">
+      <span class="pill">🌿 Votre routine</span>
+      <h2 id="resTitle"></h2>
+      <p id="resIntro"></p>
+    </div>
+    <div id="routine"></div>
+    <div class="contact">
+      <h3>On l'ajuste ensemble ?</h3>
+      <p id="contactText"></p>
+      <a class="cta wa" id="waBtn" target="_blank" rel="noopener">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.1 5.1 0 0 0 1.1 2.7 11.6 11.6 0 0 0 4.4 3.9c1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+        Recevoir mon conseil sur WhatsApp
+      </a>
+      <div class="alt">
+        <a id="callBtn">📞 M'appeler</a>
+        <a id="smsBtn">💬 SMS</a>
+      </div>
+    </div>
+    <button class="restart" id="restart">Refaire le quiz</button>
+    <p class="legal">Conseillère indépendante. Ces suggestions ne remplacent pas l'avis d'un professionnel de santé. Les compléments alimentaires s'utilisent dans le cadre d'une alimentation variée et équilibrée et d'un mode de vie sain. Demandez conseil en cas de grossesse, d'allaitement ou de traitement.</p>
+  </section>
+
+</div>
+
+<script>
+/* =========================================================
+   CONFIG : vos informations
+   ========================================================= */
+const CONFIG = {
+  prenom: "Prénom",                 // ex. "Valérie"
+  role: "Conseillère indépendante LR",
+  photo: "",                        // ex. "moi.jpg" (fichier à côté de index.html), vide = initiale
+  whatsapp: "33600000000",          // numéro au format international, sans + ni espaces
+  telephone: "+33600000000"         // pour les boutons Appeler / SMS
+};
+
+/* =========================================================
+   LES PRODUITS
+   Chaque produit : nom, description courte, moment (matin / soir / journée),
+   emoji (remplacé par une photo si "img" est rempli).
+   ⚠ Formulations prudentes : pas de « soigne », « guérit », « fait maigrir ».
+   ========================================================= */
+const P = {
+  aloeGel:     { nom:"Gel à boire Aloe Vera", desc:"La base de la routine bien-être LR, pour bien démarrer la journée.", moment:"matin", emoji:"🌿", use:"Un petit verre le matin" },
+  mindMaster:  { nom:"Mind Master", desc:"Pour accompagner les journées chargées et le rythme soutenu.", moment:"matin", emoji:"⚡", use:"Le matin" },
+  vitaActive:  { nom:"Vita Active", desc:"Un concentré de fruits rouges riche en vitamines.", moment:"matin", emoji:"🍒", use:"Le matin" },
+  proBalance:  { nom:"Pro Balance", desc:"Des minéraux pour équilibrer une alimentation moderne.", moment:"journée", emoji:"⚖️", use:"Pendant les repas" },
+  probiotic:   { nom:"Probiotic 12", desc:"Pour prendre soin de votre confort digestif au quotidien.", moment:"matin", emoji:"🫶", use:"Le matin" },
+  fiberBoost:  { nom:"Fiber Boost", desc:"Des fibres à ajouter facilement à une boisson.", moment:"journée", emoji:"🌾", use:"Dans un verre d'eau" },
+  superOmega:  { nom:"Super Omega", desc:"Des oméga-3 pour compléter votre alimentation.", moment:"journée", emoji:"🐟", use:"Pendant un repas" },
+  figuShake:   { nom:"Figu Active (shakes)", desc:"Un repas complet et rapide pour accompagner un objectif silhouette.", moment:"journée", emoji:"🥤", use:"À la place d'un repas" },
+  nightMaster: { nom:"Night Master", desc:"Pour un rituel du soir apaisant.", moment:"soir", emoji:"🌙", use:"Le soir" },
+  aloeConc:    { nom:"Gel Concentré Aloe Vera", desc:"Le geste hydratation et fraîcheur pour la peau.", moment:"soir", emoji:"💧", use:"Matin et soir" },
+  aloeCreme:   { nom:"Soin visage Aloe Vera", desc:"Une routine visage douce, adaptée aux peaux sensibles.", moment:"soir", emoji:"🧴", use:"Matin et soir" },
+  zeitgard:    { nom:"Zeitgard", desc:"La gamme soin anti-âge pour une peau plus lisse.", moment:"soir", emoji:"✨", use:"Le soir" },
+  aloeHair:    { nom:"Shampoing & soin Aloe Vera", desc:"Douceur et brillance pour les cheveux.", moment:"soir", emoji:"💆", use:"Sous la douche" }
+};
+
+/* =========================================================
+   LES QUESTIONS
+   Chaque réponse ajoute des points à certains produits.
+   ========================================================= */
+const QUESTIONS = [
+  { id:"objectif", titre:"Quelle est votre priorité en ce moment ?", hint:"Choisissez celle qui compte le plus pour vous.",
+    opts:[
+      { k:"energie",  ico:"⚡", label:"Plus d'énergie",         sub:"Je me sens vite fatigué·e", pts:{ aloeGel:3, mindMaster:4, vitaActive:3 } },
+      { k:"digestion",ico:"🫶", label:"Confort digestif",       sub:"Ventre, transit, légèreté", pts:{ aloeGel:4, probiotic:4, fiberBoost:3 } },
+      { k:"silhouette",ico:"🏃", label:"Silhouette & forme",    sub:"Retrouver la ligne en douceur", pts:{ figuShake:5, aloeGel:3, fiberBoost:2 } },
+      { k:"peau",     ico:"✨", label:"Belle peau",             sub:"Éclat, hydratation, jeunesse", pts:{ aloeConc:4, aloeCreme:3, zeitgard:3, aloeGel:1 } },
+      { k:"sommeil",  ico:"🌙", label:"Sommeil & détente",      sub:"Mieux décrocher le soir", pts:{ nightMaster:5, aloeGel:2 } },
+      { k:"defenses", ico:"🛡️", label:"Bien passer l'hiver",    sub:"Rester en forme toute l'année", pts:{ vitaActive:4, aloeGel:3, superOmega:2 } }
+    ]},
+  { id:"rythme", titre:"À quoi ressemblent vos journées ?", hint:"",
+    opts:[
+      { k:"stress",  ico:"🏃‍♀️", label:"À 100 à l'heure",  sub:"Travail, enfants, peu de pauses", pts:{ mindMaster:3, nightMaster:2 } },
+      { k:"sport",   ico:"💪", label:"Sportif·ve",          sub:"Je bouge plusieurs fois par semaine", pts:{ proBalance:3, superOmega:2, mindMaster:1 } },
+      { k:"bureau",  ico:"💻", label:"Plutôt assis·e",      sub:"Bureau, écrans, peu de mouvement", pts:{ fiberBoost:2, probiotic:1, figuShake:1 } },
+      { k:"calme",   ico:"🌼", label:"Plutôt calme",        sub:"J'ai du temps pour moi", pts:{ aloeConc:1, aloeCreme:1 } }
+    ]},
+  { id:"alimentation", titre:"Et votre alimentation ?", hint:"Soyez honnête, personne ne juge 😊",
+    opts:[
+      { k:"equilibree", ico:"🥗", label:"Plutôt équilibrée",      sub:"", pts:{} },
+      { k:"rapide",     ico:"🍔", label:"Souvent sur le pouce",   sub:"Repas rapides, grignotage", pts:{ proBalance:2, vitaActive:2, figuShake:2 } },
+      { k:"peuFruits",  ico:"🍎", label:"Peu de fruits et légumes", sub:"", pts:{ vitaActive:3, fiberBoost:2 } },
+      { k:"poisson",    ico:"🐟", label:"Peu de poisson",         sub:"", pts:{ superOmega:3 } }
+    ]},
+  { id:"beaute", titre:"Côté beauté, qu'aimeriez-vous ?", hint:"",
+    opts:[
+      { k:"hydra",   ico:"💧", label:"Une peau hydratée",       sub:"Tiraillements, peau sèche", pts:{ aloeConc:3, aloeCreme:2 } },
+      { k:"age",     ico:"✨", label:"Moins de rides",          sub:"Fermeté, rides, éclat", pts:{ zeitgard:4 } },
+      { k:"cheveux", ico:"💆", label:"De beaux cheveux",        sub:"Brillance, douceur", pts:{ aloeHair:4 } },
+      { k:"rien",    ico:"👌", label:"Rien de particulier",     sub:"Je me concentre sur le bien-être", pts:{} }
+    ]},
+  { id:"temps", titre:"Combien de temps pour votre routine ?", hint:"On adapte le nombre de gestes.",
+    opts:[
+      { k:"court", ico:"⏱️", label:"Le minimum",       sub:"2 ou 3 gestes simples", n:3 },
+      { k:"moyen", ico:"🙂", label:"Quelques minutes", sub:"Une vraie routine, sans excès", n:4 },
+      { k:"long",  ico:"🧘", label:"J'aime prendre soin de moi", sub:"La routine complète", n:5 }
+    ]}
+];
+
+const TITRES = {
+  energie:"Votre routine Énergie", digestion:"Votre routine Légèreté", silhouette:"Votre routine Silhouette",
+  peau:"Votre routine Belle peau", sommeil:"Votre routine Sérénité", defenses:"Votre routine Vitalité"
+};
+
+/* =========================================================
+   Fonctionnement (pas besoin de toucher)
+   ========================================================= */
+const $ = id => document.getElementById(id);
+let i = 0, answers = {};
+
+$("sellerName").textContent = CONFIG.prenom;
+$("sellerRole").textContent = CONFIG.role;
+$("avatar").innerHTML = CONFIG.photo ? `<img src="${CONFIG.photo}" alt="">` : CONFIG.prenom.charAt(0);
+
+function show(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("on", s.id===id)); window.scrollTo({top:0,behavior:"smooth"}); }
+
+function renderQ(){
+  const q = QUESTIONS[i];
+  $("bar").style.width = (i / QUESTIONS.length * 100) + "%";
+  $("count").textContent = `Question ${i+1} sur ${QUESTIONS.length}`;
+  $("back").hidden = false;
+  $("qTitle").textContent = q.titre;
+  $("qHint").textContent = q.hint;
+  $("opts").innerHTML = "";
+  q.opts.forEach(o=>{
+    const b = document.createElement("button");
+    b.className = "opt" + (answers[q.id]===o ? " sel" : "");
+    b.innerHTML = `<span class="ico">${o.ico}</span><span><b>${o.label}</b>${o.sub?`<small>${o.sub}</small>`:""}</span>`;
+    b.onclick = () => {
+      answers[q.id] = o;
+      document.querySelectorAll(".opt").forEach(x=>x.classList.remove("sel"));
+      b.classList.add("sel");
+      setTimeout(()=>{ i++; i < QUESTIONS.length ? renderQ() : result(); }, 220);
+    };
+    $("opts").appendChild(b);
+  });
+}
+
+function result(){
+  const score = {};
+  Object.values(answers).forEach(o => Object.entries(o.pts||{}).forEach(([k,v]) => score[k]=(score[k]||0)+v));
+  score.aloeGel = (score.aloeGel||0) + 2;   // le gel Aloe Vera est la base de toute routine LR
+  const n = answers.temps.n;
+  const picks = Object.entries(score).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k])=>({k,...P[k]}));
+
+  const obj = answers.objectif.k;
+  $("resTitle").textContent = TITRES[obj];
+  $("resIntro").textContent = `${picks.length} gestes choisis selon vos réponses, à ajuster ensemble selon vos goûts et votre budget.`;
+
+  const groups = [["matin","☀️ Le matin"],["journée","🍽️ Dans la journée"],["soir","🌙 Le soir"]];
+  $("routine").innerHTML = groups.map(([m,label])=>{
+    const list = picks.filter(p=>p.moment===m);
+    if(!list.length) return "";
+    return `<div class="moment">${label}</div>` + list.map(p=>`
+      <div class="prod">
+        <div class="pic">${p.img?`<img src="${p.img}" alt="">`:p.emoji}</div>
+        <div><h3>${p.nom}</h3><p>${p.desc}</p><span class="use">${p.use}</span></div>
+      </div>`).join("");
+  }).join("");
+
+  $("contactText").textContent = `Je suis ${CONFIG.prenom}. Envoyez-moi votre résultat : je vous réponds personnellement avec les conseils d'utilisation, les prix et les offres du moment.`;
+
+  const msg = `Bonjour ${CONFIG.prenom} ! J'ai fait le quiz : ${TITRES[obj].replace("Votre ","ma ")}.\n` +
+    `Produits proposés : ${picks.map(p=>p.nom).join(", ")}.\n` +
+    `Mes réponses : ${QUESTIONS.slice(0,4).map(q=>answers[q.id].label).join(" · ")}.\n` +
+    `J'aimerais en savoir plus 🙂`;
+  $("waBtn").href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+  $("callBtn").href = `tel:${CONFIG.telephone}`;
+  $("smsBtn").href = `sms:${CONFIG.telephone}?&body=${encodeURIComponent(msg)}`;
+
+  $("bar").style.width = "100%";
+  show("s-result");
+}
+
+$("start").onclick = () => { i=0; answers={}; renderQ(); show("s-quiz"); };
+$("back").onclick = () => { if(i===0){ show("s-home"); } else { i--; renderQ(); } };
+$("restart").onclick = () => { i=0; answers={}; show("s-home"); };
+</script>
+</body>
+</html>
