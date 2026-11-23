@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Votre routine idéale en 2 minutes</title>
-<meta name="description" content="Répondez à 5 questions et découvrez la routine bien-être et beauté LR faite pour vous. Conseil gratuit et personnalisé.">
+<meta name="description" content="Répondez à 6 questions et découvrez la routine bien-être et beauté LR faite pour vous. Conseil gratuit et personnalisé.">
 <meta property="og:title" content="Votre routine idéale en 2 minutes">
-<meta property="og:description" content="5 questions, une routine sur mesure, un conseil personnalisé et gratuit.">
+<meta property="og:description" content="6 questions, une routine sur mesure, un conseil personnalisé et gratuit.">
 <meta name="theme-color" content="#1F4D3A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -116,11 +116,11 @@ button{font:inherit;cursor:pointer}
     <div class="hero">
       <span class="pill">✨ Gratuit · 2 minutes</span>
       <h1>Trouvez la routine LR faite pour vous</h1>
-      <p>5 questions rapides sur vos envies et votre rythme de vie. Vous recevez aussitôt une routine matin et soir, adaptée à vous.</p>
+      <p>6 questions rapides sur votre besoin, votre rythme de vie et votre budget. Vous recevez aussitôt une routine sur mesure.</p>
       <button class="cta" id="start">Commencer le quiz →</button>
     </div>
     <div class="steps">
-      <div class="step"><b>1</b>Je réponds à 5 questions</div>
+      <div class="step"><b>1</b>Je réponds à 6 questions</div>
       <div class="step"><b>2</b>Je découvre ma routine</div>
       <div class="step"><b>3</b>On en parle ensemble</div>
     </div>
@@ -174,29 +174,40 @@ const CONFIG = {
   role: "Conseillère indépendante LR",
   photo: "",                        // ex. "moi.jpg" (fichier à côté de index.html), vide = initiale
   whatsapp: "33600000000",          // numéro au format international, sans + ni espaces
-  telephone: "+33600000000"         // pour les boutons Appeler / SMS
+  telephone: "+33600000000",        // pour les boutons Appeler / SMS
+  afficherPrix: true                // false = on cache le coût par jour de la routine
 };
 
 /* =========================================================
    LES PRODUITS
-   Chaque produit : nom, description courte, moment (matin / soir / journée),
-   emoji (remplacé par une photo si "img" est rempli).
+   - parJour : coût moyen par jour en euros (prix du produit ÷ nombre de jours qu'il dure).
+     ⚠ VALEURS PROVISOIRES À VÉRIFIER avec vos vrais prix.
+   - groupe : on ne propose jamais deux produits du même groupe
+     (un seul gel Aloe Vera, un seul Mind Master).
+   - moment : matin / journée / soir
    ⚠ Formulations prudentes : pas de « soigne », « guérit », « fait maigrir ».
    ========================================================= */
 const P = {
-  aloeGel:     { nom:"Gel à boire Aloe Vera", desc:"La base de la routine bien-être LR, pour bien démarrer la journée.", moment:"matin", emoji:"🌿", use:"Un petit verre le matin" },
-  mindMaster:  { nom:"Mind Master", desc:"Pour accompagner les journées chargées et le rythme soutenu.", moment:"matin", emoji:"⚡", use:"Le matin" },
-  vitaActive:  { nom:"Vita Active", desc:"Un concentré de fruits rouges riche en vitamines.", moment:"matin", emoji:"🍒", use:"Le matin" },
-  proBalance:  { nom:"Pro Balance", desc:"Des minéraux pour équilibrer une alimentation moderne.", moment:"journée", emoji:"⚖️", use:"Pendant les repas" },
-  probiotic:   { nom:"Probiotic 12", desc:"Pour prendre soin de votre confort digestif au quotidien.", moment:"matin", emoji:"🫶", use:"Le matin" },
-  fiberBoost:  { nom:"Fiber Boost", desc:"Des fibres à ajouter facilement à une boisson.", moment:"journée", emoji:"🌾", use:"Dans un verre d'eau" },
-  superOmega:  { nom:"Super Omega", desc:"Des oméga-3 pour compléter votre alimentation.", moment:"journée", emoji:"🐟", use:"Pendant un repas" },
-  figuShake:   { nom:"Figu Active (shakes)", desc:"Un repas complet et rapide pour accompagner un objectif silhouette.", moment:"journée", emoji:"🥤", use:"À la place d'un repas" },
-  nightMaster: { nom:"Night Master", desc:"Pour un rituel du soir apaisant.", moment:"soir", emoji:"🌙", use:"Le soir" },
-  aloeConc:    { nom:"Gel Concentré Aloe Vera", desc:"Le geste hydratation et fraîcheur pour la peau.", moment:"soir", emoji:"💧", use:"Matin et soir" },
-  aloeCreme:   { nom:"Soin visage Aloe Vera", desc:"Une routine visage douce, adaptée aux peaux sensibles.", moment:"soir", emoji:"🧴", use:"Matin et soir" },
-  zeitgard:    { nom:"Zeitgard", desc:"La gamme soin anti-âge pour une peau plus lisse.", moment:"soir", emoji:"✨", use:"Le soir" },
-  aloeHair:    { nom:"Shampoing & soin Aloe Vera", desc:"Douceur et brillance pour les cheveux.", moment:"soir", emoji:"💆", use:"Sous la douche" }
+  aloePeche:   { nom:"Gel à boire Aloe Vera Pêche", groupe:"aloe", parJour:1.3, moment:"matin", emoji:"🍑",
+                 desc:"La base de la routine LR, avec une note fruitée douce. Idéal pour commencer.", use:"Un petit verre le matin" },
+  aloeMiel:    { nom:"Gel à boire Aloe Vera Miel", groupe:"aloe", parJour:1.3, moment:"matin", emoji:"🍯",
+                 desc:"L'aloe vera associé au miel, pour une routine santé au naturel.", use:"Un petit verre le matin" },
+  aloeFreedom: { nom:"Gel à boire Aloe Vera Freedom", groupe:"aloe", parJour:1.5, moment:"matin", emoji:"🦵",
+                 desc:"La formule pensée pour les articulations et la mobilité.", use:"Un petit verre le matin" },
+  mindMaster:  { nom:"Mind Master", groupe:"mind", parJour:2.0, moment:"matin", emoji:"⚡",
+                 desc:"Pour accompagner les journées chargées et garder le rythme.", use:"Le matin" },
+  mindRouge:   { nom:"Mind Master Rouge", groupe:"mind", parJour:2.0, moment:"matin", emoji:"❤️",
+                 desc:"La version aux fruits rouges, pour l'énergie au quotidien.", use:"Le matin" },
+  mindGold:    { nom:"Mind Master Gold", groupe:"mind", parJour:2.5, moment:"matin", emoji:"🏅",
+                 desc:"Pour les esprits exigeants : concentration et performance.", use:"Le matin" },
+  mindExtreme: { nom:"Mind Master Extreme", groupe:"mind", parJour:2.5, moment:"matin", emoji:"🔥",
+                 desc:"Pour les gros efforts et les sportifs.", use:"Avant l'effort ou le matin" },
+  vitaActive:  { nom:"Vita Active", groupe:"vita", parJour:0.9, moment:"matin", emoji:"🍒",
+                 desc:"Un concentré de fruits rouges riche en vitamines.", use:"Le matin" },
+  superOmega:  { nom:"Super Omega", groupe:"omega", parJour:0.8, moment:"journée", emoji:"🐟",
+                 desc:"Des oméga-3 pour compléter l'alimentation.", use:"Pendant un repas" },
+  zeitgard:    { nom:"Zeitgard", groupe:"zeitgard", parJour:1.5, moment:"soir", emoji:"✨",
+                 desc:"La routine soin du visage pour une peau plus lisse et éclatante.", use:"Le soir" }
 };
 
 /* =========================================================
@@ -204,53 +215,64 @@ const P = {
    Chaque réponse ajoute des points à certains produits.
    ========================================================= */
 const QUESTIONS = [
-  { id:"objectif", titre:"Quelle est votre priorité en ce moment ?", hint:"Choisissez celle qui compte le plus pour vous.",
+  { id:"objectif", titre:"Quel est votre plus gros besoin ?", hint:"Choisissez celui qui compte le plus pour vous.",
     opts:[
-      { k:"energie",  ico:"⚡", label:"Plus d'énergie",         sub:"Je me sens vite fatigué·e", pts:{ aloeGel:3, mindMaster:4, vitaActive:3 } },
-      { k:"digestion",ico:"🫶", label:"Confort digestif",       sub:"Ventre, transit, légèreté", pts:{ aloeGel:4, probiotic:4, fiberBoost:3 } },
-      { k:"silhouette",ico:"🏃", label:"Silhouette & forme",    sub:"Retrouver la ligne en douceur", pts:{ figuShake:5, aloeGel:3, fiberBoost:2 } },
-      { k:"peau",     ico:"✨", label:"Belle peau",             sub:"Éclat, hydratation, jeunesse", pts:{ aloeConc:4, aloeCreme:3, zeitgard:3, aloeGel:1 } },
-      { k:"sommeil",  ico:"🌙", label:"Sommeil & détente",      sub:"Mieux décrocher le soir", pts:{ nightMaster:5, aloeGel:2 } },
-      { k:"defenses", ico:"🛡️", label:"Bien passer l'hiver",    sub:"Rester en forme toute l'année", pts:{ vitaActive:4, aloeGel:3, superOmega:2 } }
+      { k:"energie",   ico:"⚡", label:"Énergie",              sub:"Je me sens vite à plat", pts:{ mindRouge:5, mindMaster:4, vitaActive:4, aloePeche:2 } },
+      { k:"peau",      ico:"✨", label:"Peau",                 sub:"Éclat, rides, fermeté", pts:{ zeitgard:6, aloePeche:2, superOmega:2 } },
+      { k:"shape",     ico:"🏃", label:"Shape",                sub:"Me sentir bien dans mon corps", pts:{ aloePeche:3, mindExtreme:3, vitaActive:2, superOmega:2 } },
+      { k:"biohacking",ico:"🧠", label:"Biohacking",           sub:"Concentration, performance, optimiser ma santé", pts:{ mindGold:6, superOmega:4, vitaActive:2 } },
+      { k:"naturel",   ico:"🌿", label:"Santé au naturel",     sub:"Prendre soin de moi simplement", pts:{ aloeMiel:5, vitaActive:3, superOmega:3 } },
+      { k:"articul",   ico:"🦵", label:"Articulations",        sub:"Mobilité, raideurs, souplesse", pts:{ aloeFreedom:7, superOmega:3 } }
     ]},
-  { id:"rythme", titre:"À quoi ressemblent vos journées ?", hint:"",
+  { id:"metier", titre:"Que faites-vous dans la vie ?", hint:"",
     opts:[
-      { k:"stress",  ico:"🏃‍♀️", label:"À 100 à l'heure",  sub:"Travail, enfants, peu de pauses", pts:{ mindMaster:3, nightMaster:2 } },
-      { k:"sport",   ico:"💪", label:"Sportif·ve",          sub:"Je bouge plusieurs fois par semaine", pts:{ proBalance:3, superOmega:2, mindMaster:1 } },
-      { k:"bureau",  ico:"💻", label:"Plutôt assis·e",      sub:"Bureau, écrans, peu de mouvement", pts:{ fiberBoost:2, probiotic:1, figuShake:1 } },
-      { k:"calme",   ico:"🌼", label:"Plutôt calme",        sub:"J'ai du temps pour moi", pts:{ aloeConc:1, aloeCreme:1 } }
+      { k:"bureau",  ico:"💻", label:"Bureau, écrans",         sub:"Beaucoup assis·e, beaucoup de concentration", pts:{ mindGold:2, superOmega:2 } },
+      { k:"physique",ico:"🛠️", label:"Métier physique",        sub:"Debout, port de charges, terrain", pts:{ aloeFreedom:3, mindMaster:2 } },
+      { k:"parent",  ico:"👨‍👩‍👧", label:"Parent à temps plein", sub:"Les enfants, la maison, sans pause", pts:{ mindRouge:2, vitaActive:2 } },
+      { k:"entrepreneur",ico:"🚀", label:"Indépendant·e, entrepreneur·e", sub:"Des journées sans fin", pts:{ mindGold:3, mindMaster:1 } },
+      { k:"etudiant",ico:"📚", label:"Étudiant·e",             sub:"Cours, révisions, examens", pts:{ mindGold:2, vitaActive:1 } },
+      { k:"retraite",ico:"🌻", label:"Retraité·e",             sub:"Du temps pour moi", pts:{ aloeFreedom:2, aloeMiel:2, superOmega:1 } }
     ]},
-  { id:"alimentation", titre:"Et votre alimentation ?", hint:"Soyez honnête, personne ne juge 😊",
+  { id:"rythme", titre:"Comment décririez-vous votre rythme ?", hint:"",
     opts:[
-      { k:"equilibree", ico:"🥗", label:"Plutôt équilibrée",      sub:"", pts:{} },
-      { k:"rapide",     ico:"🍔", label:"Souvent sur le pouce",   sub:"Repas rapides, grignotage", pts:{ proBalance:2, vitaActive:2, figuShake:2 } },
-      { k:"peuFruits",  ico:"🍎", label:"Peu de fruits et légumes", sub:"", pts:{ vitaActive:3, fiberBoost:2 } },
-      { k:"poisson",    ico:"🐟", label:"Peu de poisson",         sub:"", pts:{ superOmega:3 } }
+      { k:"calme",   ico:"🌼", label:"Plutôt tranquille",  sub:"", pts:{ aloeMiel:1 } },
+      { k:"soutenu", ico:"🙂", label:"Soutenu",            sub:"Bien rempli, mais ça va", pts:{ mindMaster:2, vitaActive:1 } },
+      { k:"fou",     ico:"🏃‍♀️", label:"À 100 à l'heure", sub:"Je cours tout le temps", pts:{ mindRouge:3, mindMaster:3, mindGold:1 } }
     ]},
-  { id:"beaute", titre:"Côté beauté, qu'aimeriez-vous ?", hint:"",
+  { id:"sport", titre:"Combien de séances de sport par semaine ?", hint:"Marche rapide, salle, course, vélo, danse… tout compte.",
     opts:[
-      { k:"hydra",   ico:"💧", label:"Une peau hydratée",       sub:"Tiraillements, peau sèche", pts:{ aloeConc:3, aloeCreme:2 } },
-      { k:"age",     ico:"✨", label:"Moins de rides",          sub:"Fermeté, rides, éclat", pts:{ zeitgard:4 } },
-      { k:"cheveux", ico:"💆", label:"De beaux cheveux",        sub:"Brillance, douceur", pts:{ aloeHair:4 } },
-      { k:"rien",    ico:"👌", label:"Rien de particulier",     sub:"Je me concentre sur le bien-être", pts:{} }
+      { k:"0",  ico:"🛋️", label:"Aucune pour l'instant", sub:"", pts:{ aloePeche:1 } },
+      { k:"1",  ico:"🚶", label:"1 à 2 séances",        sub:"", pts:{ vitaActive:1 } },
+      { k:"3",  ico:"🏋️", label:"3 à 4 séances",        sub:"", pts:{ mindExtreme:3, superOmega:1, aloeFreedom:1 } },
+      { k:"5",  ico:"🏆", label:"5 séances ou plus",    sub:"", pts:{ mindExtreme:5, aloeFreedom:2, superOmega:2 } }
     ]},
-  { id:"temps", titre:"Combien de temps pour votre routine ?", hint:"On adapte le nombre de gestes.",
+  { id:"moment", titre:"Quel est le moment le plus dur de votre journée ?", hint:"",
     opts:[
-      { k:"court", ico:"⏱️", label:"Le minimum",       sub:"2 ou 3 gestes simples", n:3 },
-      { k:"moyen", ico:"🙂", label:"Quelques minutes", sub:"Une vraie routine, sans excès", n:4 },
-      { k:"long",  ico:"🧘", label:"J'aime prendre soin de moi", sub:"La routine complète", n:5 }
+      { k:"reveil",  ico:"⏰", label:"Le réveil",                 sub:"Difficile de démarrer", pts:{ mindRouge:3, mindMaster:2, vitaActive:1 } },
+      { k:"aprem",   ico:"🥱", label:"Le coup de barre de l'après-midi", sub:"", pts:{ mindMaster:3, mindRouge:2 } },
+      { k:"soir",    ico:"🌆", label:"La fin de journée",         sub:"Je rentre épuisé·e, courbatures", pts:{ aloeFreedom:2, vitaActive:2 } },
+      { k:"concentr",ico:"🧠", label:"Rester concentré·e",        sub:"Je décroche vite", pts:{ mindGold:3, superOmega:2 } },
+      { k:"aucun",   ico:"😎", label:"Aucun, tout roule",         sub:"", pts:{} }
+    ]},
+  { id:"budget", titre:"Quel budget bien-être par jour ?", hint:"Moins qu'un café ? Plus ? On adapte la routine à vous.",
+    opts:[
+      { k:"1", ico:"☕", label:"Environ 1,50 € par jour", sub:"Soit environ 45 € par mois · l'essentiel", max:1.5 },
+      { k:"2", ico:"🥐", label:"Environ 3 € par jour",    sub:"Soit environ 90 € par mois · une vraie routine", max:3 },
+      { k:"3", ico:"🥗", label:"Environ 5 € par jour",    sub:"Soit environ 150 € par mois · la routine complète", max:5 },
+      { k:"4", ico:"💎", label:"Plus de 5 € par jour",    sub:"Je veux le meilleur pour moi", max:8 }
     ]}
 ];
 
 const TITRES = {
-  energie:"Votre routine Énergie", digestion:"Votre routine Légèreté", silhouette:"Votre routine Silhouette",
-  peau:"Votre routine Belle peau", sommeil:"Votre routine Sérénité", defenses:"Votre routine Vitalité"
+  energie:"Votre routine Énergie", peau:"Votre routine Belle peau", shape:"Votre routine Shape",
+  biohacking:"Votre routine Biohacking", naturel:"Votre routine Santé au naturel", articul:"Votre routine Mobilité"
 };
 
 /* =========================================================
    Fonctionnement (pas besoin de toucher)
    ========================================================= */
 const $ = id => document.getElementById(id);
+const euros = n => n.toFixed(2).replace(".", ",") + " €";
 let i = 0, answers = {};
 
 $("sellerName").textContent = CONFIG.prenom;
@@ -263,7 +285,6 @@ function renderQ(){
   const q = QUESTIONS[i];
   $("bar").style.width = (i / QUESTIONS.length * 100) + "%";
   $("count").textContent = `Question ${i+1} sur ${QUESTIONS.length}`;
-  $("back").hidden = false;
   $("qTitle").textContent = q.titre;
   $("qHint").textContent = q.hint;
   $("opts").innerHTML = "";
@@ -281,16 +302,34 @@ function renderQ(){
   });
 }
 
-function result(){
+/* Choisit les produits : les mieux notés d'abord, un seul par groupe,
+   sans dépasser le budget. */
+function choisir(){
   const score = {};
   Object.values(answers).forEach(o => Object.entries(o.pts||{}).forEach(([k,v]) => score[k]=(score[k]||0)+v));
-  score.aloeGel = (score.aloeGel||0) + 2;   // le gel Aloe Vera est la base de toute routine LR
-  const n = answers.temps.n;
-  const picks = Object.entries(score).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k])=>({k,...P[k]}));
+  // un gel Aloe Vera fait toujours partie de la routine : la base LR
+  ["aloePeche","aloeMiel","aloeFreedom"].forEach(k => score[k]=(score[k]||0)+2);
+  const max = answers.budget.max * 1.1;   // petite tolérance de 10 %
+  const ordre = Object.entries(score).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
+  const picks = [], groupes = new Set(); let total = 0;
+  for (const k of ordre){
+    const p = P[k];
+    if (!p || groupes.has(p.groupe)) continue;
+    if (total + p.parJour > max) continue;
+    picks.push({k,...p}); groupes.add(p.groupe); total += p.parJour;
+  }
+  // si rien ne rentre dans le budget, on propose quand même le produit le plus adapté
+  if (!picks.length && ordre.length){ const k = ordre[0]; picks.push({k,...P[k]}); total = P[k].parJour; }
+  return { picks, total };
+}
 
+function result(){
+  const { picks, total } = choisir();
   const obj = answers.objectif.k;
   $("resTitle").textContent = TITRES[obj];
-  $("resIntro").textContent = `${picks.length} gestes choisis selon vos réponses, à ajuster ensemble selon vos goûts et votre budget.`;
+  $("resIntro").textContent = CONFIG.afficherPrix
+    ? `${picks.length} produit${picks.length>1?"s":""} choisi${picks.length>1?"s":""} pour vous, pour environ ${euros(total)} par jour.`
+    : `${picks.length} produit${picks.length>1?"s":""} choisi${picks.length>1?"s":""} selon vos réponses.`;
 
   const groups = [["matin","☀️ Le matin"],["journée","🍽️ Dans la journée"],["soir","🌙 Le soir"]];
   $("routine").innerHTML = groups.map(([m,label])=>{
@@ -303,11 +342,12 @@ function result(){
       </div>`).join("");
   }).join("");
 
-  $("contactText").textContent = `Je suis ${CONFIG.prenom}. Envoyez-moi votre résultat : je vous réponds personnellement avec les conseils d'utilisation, les prix et les offres du moment.`;
+  $("contactText").textContent = `Je suis ${CONFIG.prenom}. Envoyez-moi votre résultat : je vous réponds personnellement avec les conseils d'utilisation et les offres du moment.`;
 
   const msg = `Bonjour ${CONFIG.prenom} ! J'ai fait le quiz : ${TITRES[obj].replace("Votre ","ma ")}.\n` +
     `Produits proposés : ${picks.map(p=>p.nom).join(", ")}.\n` +
-    `Mes réponses : ${QUESTIONS.slice(0,4).map(q=>answers[q.id].label).join(" · ")}.\n` +
+    `Mon profil : ${["objectif","metier","rythme","sport","moment"].map(id=>answers[id].label).join(" · ")}.\n` +
+    `Mon budget : ${answers.budget.label.toLowerCase()}.\n` +
     `J'aimerais en savoir plus 🙂`;
   $("waBtn").href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
   $("callBtn").href = `tel:${CONFIG.telephone}`;
