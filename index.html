@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Votre routine idéale en 2 minutes</title>
-<meta name="description" content="Répondez à 6 questions et découvrez la routine bien-être et beauté LR faite pour vous. Conseil gratuit et personnalisé.">
+<meta name="description" content="Répondez à quelques questions et découvrez la routine bien-être et beauté LR faite pour vous. Conseil gratuit et personnalisé.">
 <meta property="og:title" content="Votre routine idéale en 2 minutes">
-<meta property="og:description" content="6 questions, une routine sur mesure, un conseil personnalisé et gratuit.">
+<meta property="og:description" content="Quelques questions, une routine sur mesure, un conseil personnalisé et gratuit.">
 <meta name="theme-color" content="#1F4D3A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -116,11 +116,11 @@ button{font:inherit;cursor:pointer}
     <div class="hero">
       <span class="pill">✨ Gratuit · 2 minutes</span>
       <h1>Trouvez la routine LR faite pour vous</h1>
-      <p>6 questions rapides sur votre besoin, votre rythme de vie et votre budget. Vous recevez aussitôt une routine sur mesure.</p>
+      <p>Quelques questions rapides sur votre besoin, votre rythme de vie et votre budget. Vous recevez aussitôt une routine sur mesure.</p>
       <button class="cta" id="start">Commencer le quiz →</button>
     </div>
     <div class="steps">
-      <div class="step"><b>1</b>Je réponds à 6 questions</div>
+      <div class="step"><b>1</b>Je réponds à quelques questions</div>
       <div class="step"><b>2</b>Je découvre ma routine</div>
       <div class="step"><b>3</b>On en parle ensemble</div>
     </div>
@@ -206,6 +206,8 @@ const P = {
                  desc:"Un concentré de fruits rouges riche en vitamines.", use:"Le matin" },
   superOmega:  { nom:"Super Omega", groupe:"omega", parJour:0.8, moment:"journée", emoji:"🐟",
                  desc:"Des oméga-3 pour compléter l'alimentation.", use:"Pendant un repas" },
+  figuActive:  { nom:"Shakes Figu Active", groupe:"figu", parJour:2.5, moment:"journée", emoji:"🥤",
+                 desc:"Des shakes complets et gourmands, à utiliser selon votre objectif.", use:"Selon votre objectif" },
   zeitgard:    { nom:"Zeitgard", groupe:"zeitgard", parJour:1.5, moment:"soir", emoji:"✨",
                  desc:"La routine soin du visage pour une peau plus lisse et éclatante.", use:"Le soir" }
 };
@@ -219,10 +221,20 @@ const QUESTIONS = [
     opts:[
       { k:"energie",   ico:"⚡", label:"Énergie",              sub:"Je me sens vite à plat", pts:{ mindRouge:5, mindMaster:4, vitaActive:4, aloePeche:2 } },
       { k:"peau",      ico:"✨", label:"Peau",                 sub:"Éclat, rides, fermeté", pts:{ zeitgard:6, aloePeche:2, superOmega:2 } },
-      { k:"shape",     ico:"🏃", label:"Shape",                sub:"Me sentir bien dans mon corps", pts:{ aloePeche:3, mindExtreme:3, vitaActive:2, superOmega:2 } },
+      { k:"shape",     ico:"🏃", label:"Shape · Body mission",  sub:"Perte de poids, rééquilibrage, prise de masse", pts:{ figuActive:3, aloePeche:3, vitaActive:1, superOmega:1 } },
       { k:"biohacking",ico:"🧠", label:"Biohacking",           sub:"Concentration, performance, optimiser ma santé", pts:{ mindGold:6, superOmega:4, vitaActive:2 } },
       { k:"naturel",   ico:"🌿", label:"Santé au naturel",     sub:"Prendre soin de moi simplement", pts:{ aloeMiel:5, vitaActive:3, superOmega:3 } },
       { k:"articul",   ico:"🦵", label:"Articulations",        sub:"Mobilité, raideurs, souplesse", pts:{ aloeFreedom:7, superOmega:3 } }
+    ]},
+  { id:"mission", si: a => a.objectif && a.objectif.k==="shape",
+    titre:"Quelle est votre body mission ?", hint:"On adapte l'utilisation des shakes à votre objectif.",
+    opts:[
+      { k:"perte",  ico:"📉", label:"Perte de poids",  sub:"Retrouver la ligne en douceur", pts:{ aloePeche:2 },
+        titre:"Votre routine Perte de poids",  use:"À la place d'un repas" },
+      { k:"reequi", ico:"⚖️", label:"Rééquilibrage",   sub:"Mieux manger, retrouver de bonnes habitudes", pts:{ vitaActive:2, superOmega:1 },
+        titre:"Votre routine Rééquilibrage",   use:"Au petit-déjeuner ou en collation" },
+      { k:"masse",  ico:"💪", label:"Prise de masse",  sub:"Prendre du muscle avec le sport", pts:{ mindExtreme:3, superOmega:2 },
+        titre:"Votre routine Prise de masse",  use:"En plus des repas, après le sport" }
     ]},
   { id:"metier", titre:"Que faites-vous dans la vie ?", hint:"",
     opts:[
@@ -281,10 +293,13 @@ $("avatar").innerHTML = CONFIG.photo ? `<img src="${CONFIG.photo}" alt="">` : CO
 
 function show(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("on", s.id===id)); window.scrollTo({top:0,behavior:"smooth"}); }
 
+// questions affichées (certaines dépendent des réponses précédentes)
+const QS = () => QUESTIONS.filter(q => !q.si || q.si(answers));
+
 function renderQ(){
-  const q = QUESTIONS[i];
-  $("bar").style.width = (i / QUESTIONS.length * 100) + "%";
-  $("count").textContent = `Question ${i+1} sur ${QUESTIONS.length}`;
+  const list = QS(), q = list[i];
+  $("bar").style.width = (i / list.length * 100) + "%";
+  $("count").textContent = `Question ${i+1} sur ${list.length}`;
   $("qTitle").textContent = q.titre;
   $("qHint").textContent = q.hint;
   $("opts").innerHTML = "";
@@ -294,9 +309,10 @@ function renderQ(){
     b.innerHTML = `<span class="ico">${o.ico}</span><span><b>${o.label}</b>${o.sub?`<small>${o.sub}</small>`:""}</span>`;
     b.onclick = () => {
       answers[q.id] = o;
+      QUESTIONS.forEach(x => { if (x.si && !x.si(answers)) delete answers[x.id]; });
       document.querySelectorAll(".opt").forEach(x=>x.classList.remove("sel"));
       b.classList.add("sel");
-      setTimeout(()=>{ i++; i < QUESTIONS.length ? renderQ() : result(); }, 220);
+      setTimeout(()=>{ i++; i < QS().length ? renderQ() : result(); }, 220);
     };
     $("opts").appendChild(b);
   });
@@ -312,6 +328,10 @@ function choisir(){
   const max = answers.budget.max * 1.1;   // petite tolérance de 10 %
   const ordre = Object.entries(score).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
   const picks = [], groupes = new Set(); let total = 0;
+  // body mission : les shakes Figu Active sont toujours proposés, avec l'utilisation adaptée
+  if (answers.mission){
+    picks.push({k:"figuActive",...P.figuActive, use:answers.mission.use}); groupes.add("figu"); total += P.figuActive.parJour;
+  }
   for (const k of ordre){
     const p = P[k];
     if (!p || groupes.has(p.groupe)) continue;
@@ -326,7 +346,8 @@ function choisir(){
 function result(){
   const { picks, total } = choisir();
   const obj = answers.objectif.k;
-  $("resTitle").textContent = TITRES[obj];
+  const titre = answers.mission ? answers.mission.titre : TITRES[obj];
+  $("resTitle").textContent = titre;
   $("resIntro").textContent = CONFIG.afficherPrix
     ? `${picks.length} produit${picks.length>1?"s":""} choisi${picks.length>1?"s":""} pour vous, pour environ ${euros(total)} par jour.`
     : `${picks.length} produit${picks.length>1?"s":""} choisi${picks.length>1?"s":""} selon vos réponses.`;
@@ -344,9 +365,9 @@ function result(){
 
   $("contactText").textContent = `Je suis ${CONFIG.prenom}. Envoyez-moi votre résultat : je vous réponds personnellement avec les conseils d'utilisation et les offres du moment.`;
 
-  const msg = `Bonjour ${CONFIG.prenom} ! J'ai fait le quiz : ${TITRES[obj].replace("Votre ","ma ")}.\n` +
+  const msg = `Bonjour ${CONFIG.prenom} ! J'ai fait le quiz : ${titre.replace("Votre ","ma ")}.\n` +
     `Produits proposés : ${picks.map(p=>p.nom).join(", ")}.\n` +
-    `Mon profil : ${["objectif","metier","rythme","sport","moment"].map(id=>answers[id].label).join(" · ")}.\n` +
+    `Mon profil : ${["objectif","mission","metier","rythme","sport","moment"].filter(id=>answers[id]).map(id=>answers[id].label).join(" · ")}.\n` +
     `Mon budget : ${answers.budget.label.toLowerCase()}.\n` +
     `J'aimerais en savoir plus 🙂`;
   $("waBtn").href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
