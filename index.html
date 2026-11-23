@@ -7,163 +7,287 @@
 <meta name="description" content="Répondez à quelques questions et découvrez la routine bien-être et beauté LR faite pour vous. Conseil gratuit et personnalisé.">
 <meta property="og:title" content="Votre routine idéale en 2 minutes">
 <meta property="og:description" content="Quelques questions, une routine sur mesure, un conseil personnalisé et gratuit.">
-<meta name="theme-color" content="#1F4D3A">
+<meta name="theme-color" content="#0C2219">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* =========================================================
-   RÉGLAGES : modifiez seulement cette partie
-   (le reste de la configuration est dans le script, en bas : CONFIG)
+   COULEURS : modifiez ici si besoin
    ========================================================= */
 :root{
-  --bg:#F6F3EC;          /* fond crème */
-  --surface:#FFFFFF;
-  --ink:#16211C;         /* texte */
-  --ink-2:#4B5751;
-  --ink-3:#86908B;
-  --line:#E6E0D3;
-  --green:#1F4D3A;       /* vert aloe foncé (couleur principale) */
-  --green-2:#2E6B52;
-  --green-soft:#E4EFE8;
-  --gold:#C9973E;        /* accent */
-  --wa:#1DA851;          /* bouton WhatsApp */
-  --radius:20px;
-  --shadow:0 1px 2px rgba(22,33,28,.05),0 18px 40px -24px rgba(22,33,28,.35);
+  --forest:#0C2219;      /* vert forêt (fonds sombres) */
+  --forest-2:#123327;
+  --forest-3:#1B4836;
+  --mint:#A6EBC1;        /* vert menthe (boutons, accents) */
+  --mint-2:#5DD39A;
+  --paper:#F2F4EF;       /* fond clair */
+  --card:#FFFFFF;
+  --ink:#0D1A14;
+  --ink-2:#4A5A52;
+  --ink-3:#8A968F;
+  --line:#E2E7E1;
+  --on-dark:#E9F3ED;
+  --on-dark-2:#9DB5A8;
+  --glass:rgba(255,255,255,.07);
+  --glass-line:rgba(255,255,255,.12);
+  --wa:#1FAF57;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --shadow:0 1px 2px rgba(13,26,20,.04),0 20px 44px -26px rgba(13,26,20,.35);
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
-h1,h2,h3{font-family:Fraunces,Georgia,serif;letter-spacing:-.02em;line-height:1.12;margin:0}
-button{font:inherit;cursor:pointer}
-.wrap{max-width:560px;margin:0 auto;padding:20px 16px 48px}
-.screen{display:none;animation:in .35s ease}
-.screen.on{display:block}
-@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+html{-webkit-text-size-adjust:100%;background:var(--forest)}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "Inter Tight",Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.035em;line-height:1.05}
+button{font:inherit;cursor:pointer;color:inherit}
+a{color:inherit}
+.mono{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+.screen{display:none;min-height:100vh;min-height:100dvh}
+.screen.on{display:block;animation:fade .45s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.inner{max-width:560px;margin:0 auto;padding:0 16px}
 
-/* --- en-tête --- */
-.top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
-.avatar{width:44px;height:44px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-weight:700;flex:none;overflow:hidden}
+/* ---------- fonds sombres « bio » ---------- */
+.dark{background:var(--forest);color:var(--on-dark);position:relative;overflow:hidden;isolation:isolate}
+.dark::before,.dark::after{content:"";position:absolute;border-radius:50%;filter:blur(60px);z-index:-1;pointer-events:none}
+.dark::before{width:420px;height:420px;left:-140px;top:-120px;background:radial-gradient(circle,rgba(93,211,154,.38),transparent 65%);animation:drift 14s ease-in-out infinite alternate}
+.dark::after{width:380px;height:380px;right:-160px;bottom:-60px;background:radial-gradient(circle,rgba(166,235,193,.22),transparent 65%);animation:drift 18s ease-in-out infinite alternate-reverse}
+@keyframes drift{to{transform:translate(40px,30px) scale(1.1)}}
+.grid-bg{position:absolute;inset:0;z-index:-1;opacity:.5;background-image:radial-gradient(rgba(255,255,255,.09) 1px,transparent 1px);background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse at 50% 40%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 40%,#000 20%,transparent 75%)}
+
+/* ---------- vendeuse ---------- */
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:18px 0 0}
+.seller{display:flex;align-items:center;gap:10px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:99px;padding:5px 14px 5px 5px;min-width:0}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--mint);color:var(--forest);display:grid;place-items:center;font-weight:700;flex:none;overflow:hidden}
 .avatar img{width:100%;height:100%;object-fit:cover}
-.who{line-height:1.25}
-.who b{display:block;font-size:.98rem}
-.who span{font-size:.84rem;color:var(--ink-3)}
+.seller b{display:block;font-size:.88rem;font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seller span{display:block;font-size:.72rem;color:var(--on-dark-2);line-height:1.2;white-space:nowrap}
+.live{display:flex;align-items:center;gap:7px;color:var(--on-dark-2);flex:none}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--mint-2);box-shadow:0 0 0 0 rgba(93,211,154,.6);animation:ping 2s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 8px rgba(93,211,154,0)}100%{box-shadow:0 0 0 0 rgba(93,211,154,0)}}
 
-/* --- accueil --- */
-.hero{background:var(--green);color:#fff;border-radius:28px;padding:30px 24px 26px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
-.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(201,151,62,.45),transparent 70%)}
-.pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);border-radius:99px;padding:5px 12px;font-size:.8rem;font-weight:600;margin-bottom:16px}
-.hero h1{font-size:clamp(1.9rem,7.5vw,2.5rem);margin-bottom:12px;position:relative}
-.hero p{color:#D5E4DB;margin:0 0 22px;position:relative}
-.cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:16px;padding:17px 20px;font-weight:700;font-size:1.05rem;background:var(--gold);color:#1B1408;transition:transform .15s}
-.cta:active{transform:scale(.98)}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 0}
-.step{background:var(--surface);border-radius:16px;padding:14px 12px;text-align:center;font-size:.84rem;color:var(--ink-2);box-shadow:var(--shadow)}
-.step b{display:block;font-family:Fraunces,serif;font-size:1.35rem;color:var(--green)}
-.reassure{margin:18px 4px 0;font-size:.85rem;color:var(--ink-3);text-align:center}
+/* ---------- accueil ---------- */
+#s-home .inner{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+.orbit{position:relative;height:300px;margin:12px 0 0}
+.ring{position:absolute;left:50%;top:50%;border:1px solid rgba(166,235,193,.16);border-radius:50%;transform:translate(-50%,-50%)}
+.ring.r1{width:120px;height:120px;background:radial-gradient(circle,rgba(166,235,193,.25),rgba(166,235,193,.04) 70%);border-color:rgba(166,235,193,.35)}
+.ring.r2{width:210px;height:210px}
+.ring.r3{width:300px;height:300px;border-style:dashed;animation:spin 60s linear infinite}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center}
+.core b{display:block;font-size:2.6rem;font-weight:600;letter-spacing:-.05em;line-height:1;color:#fff}
+.core span{color:var(--on-dark-2)}
+.chip{position:absolute;display:flex;align-items:center;gap:7px;background:rgba(12,34,25,.55);border:1px solid var(--glass-line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:99px;padding:6px 12px 6px 8px;font-size:.8rem;font-weight:500;white-space:nowrap;animation:float 6s ease-in-out infinite}
+.chip i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:.62rem;background:rgba(166,235,193,.18);color:var(--mint)}
+@keyframes float{50%{transform:translateY(-8px)}}
+.hero-txt{margin-top:auto;padding-top:10px}
+.hero-txt h1{font-size:clamp(2.3rem,10vw,3.3rem);color:#fff}
+.hero-txt h1 em{font-style:normal;color:var(--mint)}
+.hero-txt p{color:var(--on-dark-2);font-size:1.02rem;margin:14px 0 22px;max-width:30em}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:99px;padding:17px 22px;font-weight:600;font-size:1.02rem;text-decoration:none;transition:transform .15s,box-shadow .2s}
+.btn:active{transform:scale(.98)}
+.btn-mint{background:var(--mint);color:var(--forest);box-shadow:0 10px 30px -10px rgba(166,235,193,.6)}
+.btn-mint .arr{width:28px;height:28px;border-radius:50%;background:var(--forest);color:var(--mint);display:grid;place-items:center;font-size:.9rem}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);margin:22px 0 0;border-top:1px solid var(--glass-line)}
+.stats div{padding:14px 4px 0}
+.stats b{display:block;font-size:1.5rem;font-weight:600;letter-spacing:-.04em;color:#fff}
+.stats span{font-size:.78rem;color:var(--on-dark-2)}
+.checks{display:flex;flex-wrap:wrap;gap:6px 16px;padding:18px 0 26px;color:var(--on-dark-2);font-size:.8rem}
+.checks span::before{content:"✓ ";color:var(--mint)}
 
-/* --- questions --- */
-.progress{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:10px}
-.progress i{display:block;height:100%;width:0;background:var(--green);border-radius:99px;transition:width .35s ease}
-.qmeta{display:flex;justify-content:space-between;align-items:center;font-size:.84rem;color:var(--ink-3);margin-bottom:18px}
-.back{background:none;border:0;color:var(--ink-2);padding:6px 0;font-weight:600}
-.back[hidden]{visibility:hidden;display:inline}
-.q h2{font-size:clamp(1.45rem,6vw,1.8rem);margin-bottom:6px}
-.q .hint{color:var(--ink-2);margin:0 0 18px;font-size:.95rem}
-.opts{display:grid;gap:10px}
-.opt{display:flex;align-items:center;gap:14px;text-align:left;width:100%;background:var(--surface);border:2px solid transparent;border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);color:var(--ink);transition:border-color .15s,transform .15s}
+/* ---------- questions ---------- */
+#s-quiz{background:var(--paper)}
+.qtop{display:flex;align-items:center;gap:12px;padding:18px 0 8px}
+.round{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;flex:none;font-size:1.05rem}
+.segs{display:flex;gap:4px;flex:1}
+.segs i{flex:1;height:4px;border-radius:99px;background:var(--line);overflow:hidden;position:relative}
+.segs i.done{background:var(--forest-3)}
+.segs i.cur::after{content:"";position:absolute;inset:0;width:45%;background:var(--mint-2);border-radius:99px}
+.qhead{padding:22px 0 18px}
+.qhead .mono{color:var(--forest-3)}
+.qhead h2{font-size:clamp(1.7rem,7.4vw,2.2rem);margin:10px 0 8px}
+.qhead p{color:var(--ink-2);margin:0;font-size:.96rem}
+.opts{display:grid;gap:10px;padding-bottom:36px}
+.opt{display:flex;align-items:center;gap:14px;text-align:left;width:100%;background:var(--card);border:1.5px solid transparent;border-radius:20px;padding:12px 14px;box-shadow:var(--shadow);animation:up .4s ease both;transition:border-color .15s,background .15s,transform .15s}
 .opt:active{transform:scale(.99)}
-.opt .ico{font-size:1.5rem;flex:none;width:32px;text-align:center}
-.opt b{display:block;font-weight:600}
-.opt small{color:var(--ink-3);font-size:.84rem}
-.opt.sel{border-color:var(--green);background:var(--green-soft)}
-.next{margin-top:16px}
-.next[disabled]{opacity:.4;cursor:default}
+.opt .ico{width:44px;height:44px;border-radius:14px;background:var(--paper);display:grid;place-items:center;font-size:1.3rem;flex:none}
+.opt .t{flex:1;min-width:0}
+.opt b{display:block;font-weight:600;font-size:1rem;letter-spacing:-.01em}
+.opt small{display:block;color:var(--ink-3);font-size:.84rem;line-height:1.35;margin-top:1px}
+.opt .ck{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);flex:none;display:grid;place-items:center;font-size:.7rem;color:transparent}
+.opt.sel{border-color:var(--forest-3);background:#F6FBF8}
+.opt.sel .ico{background:var(--mint)}
+.opt.sel .ck{background:var(--forest-3);border-color:var(--forest-3);color:var(--mint)}
 
-/* --- résultat --- */
-.res-head{text-align:center;margin:6px 0 20px}
-.res-head .pill{background:var(--green-soft);color:var(--green)}
-.res-head h2{font-size:clamp(1.7rem,7vw,2.2rem);margin-bottom:8px}
-.res-head p{color:var(--ink-2);margin:0}
-.moment{margin:22px 0 10px;display:flex;align-items:center;gap:8px;font-weight:700;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--green-2)}
+/* ---------- analyse ---------- */
+#s-scan .inner{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;padding-top:30px;padding-bottom:30px}
+.scanner{position:relative;width:250px;height:250px;margin:0 auto}
+.scanner .ring{border-color:rgba(166,235,193,.18)}
+.scanner .r1{width:250px;height:250px}
+.scanner .r2{width:180px;height:180px;border-style:dashed;animation:spin 12s linear infinite reverse}
+.scanner .r3{width:110px;height:110px;background:radial-gradient(circle,rgba(166,235,193,.22),transparent 70%);border-color:rgba(166,235,193,.4);animation:none}
+.sweep{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(166,235,193,0) 0deg,rgba(166,235,193,.0) 280deg,rgba(166,235,193,.45) 360deg);animation:spin2 1.6s linear infinite;-webkit-mask:radial-gradient(circle,transparent 54px,#000 55px);mask:radial-gradient(circle,transparent 54px,#000 55px)}
+@keyframes spin2{to{transform:rotate(360deg)}}
+.pct{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.pct b{font-size:2.4rem;font-weight:600;letter-spacing:-.05em;color:#fff;font-variant-numeric:tabular-nums;line-height:1}
+.blip{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px var(--mint);opacity:0;animation:blip 1.6s ease-out infinite}
+@keyframes blip{0%,100%{opacity:0;transform:scale(.4)}20%{opacity:1;transform:scale(1)}}
+.scan-txt{text-align:center;margin:28px 0 18px}
+.scan-txt .mono{color:var(--mint)}
+.scan-txt h2{font-size:1.6rem;color:#fff;margin-top:8px}
+.scan-prod{height:22px;margin-top:8px;color:var(--on-dark-2);font-family:var(--mono);font-size:.8rem}
+.tags{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;min-height:30px;margin-bottom:20px}
+.tags span{background:var(--glass);border:1px solid var(--glass-line);border-radius:99px;padding:4px 11px;font-size:.78rem;animation:up .35s ease both}
+.steps{list-style:none;margin:0 auto;padding:16px 18px;max-width:380px;width:100%;background:var(--glass);border:1px solid var(--glass-line);border-radius:20px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.steps li{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:.9rem;color:rgba(233,243,237,.35);transition:color .3s}
+.steps li i{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.18);flex:none;display:grid;place-items:center;font-style:normal;font-size:.6rem}
+.steps li.run{color:#fff}
+.steps li.run i{border-color:var(--mint);border-top-color:transparent;animation:spin2 .7s linear infinite}
+.steps li.ok{color:var(--on-dark)}
+.steps li.ok i{background:var(--mint);border-color:var(--mint);color:var(--forest)}
+
+/* ---------- résultat ---------- */
+#s-result{background:var(--paper)}
+.res-hero{padding-bottom:26px;border-radius:0 0 32px 32px}
+.res-hero .mono{color:var(--mint);display:flex;align-items:center;gap:8px;margin-top:26px}
+.res-hero h2{font-size:clamp(2.1rem,9vw,2.9rem);color:#fff;margin:10px 0 10px}
+.res-hero p{color:var(--on-dark-2);margin:0 0 20px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tile{background:var(--glass);border:1px solid var(--glass-line);border-radius:18px;padding:12px 14px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);animation:up .5s ease both;min-width:0}
+.tile .mono{color:var(--on-dark-2);font-size:.62rem;margin:0;display:block}
+.tile b{display:block;color:#fff;font-weight:600;margin-top:6px;font-size:.98rem;line-height:1.25}
+.meter{height:5px;border-radius:99px;background:rgba(255,255,255,.12);margin-top:10px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--mint-2),var(--mint));transition:width 1.2s cubic-bezier(.2,.8,.2,1) .4s}
+.routine{padding:8px 0 0}
+.moment{display:flex;align-items:center;gap:10px;margin:24px 0 12px;color:var(--forest-3)}
 .moment::after{content:"";flex:1;height:1px;background:var(--line)}
-.prod{display:flex;gap:14px;background:var(--surface);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:10px}
-.prod .pic{width:58px;height:58px;border-radius:14px;background:var(--green-soft);display:grid;place-items:center;font-size:1.7rem;flex:none;overflow:hidden}
+.prod{display:flex;gap:14px;align-items:flex-start;background:var(--card);border-radius:22px;padding:14px;box-shadow:var(--shadow);margin-bottom:10px;animation:up .5s ease both}
+.prod .pic{width:62px;height:62px;border-radius:16px;background:linear-gradient(145deg,#E6F4EC,#D3EBDD);display:grid;place-items:center;font-size:1.7rem;flex:none;overflow:hidden}
 .prod .pic img{width:100%;height:100%;object-fit:cover}
-.prod h3{font-family:Inter,sans-serif;font-size:1rem;font-weight:700;letter-spacing:0;margin-bottom:2px}
-.prod p{margin:0;color:var(--ink-2);font-size:.9rem}
-.prod .use{display:inline-block;margin-top:6px;font-size:.78rem;font-weight:600;color:var(--green-2);background:var(--green-soft);border-radius:99px;padding:2px 10px}
-.contact{margin-top:26px;background:var(--green);color:#fff;border-radius:28px;padding:24px 20px;box-shadow:var(--shadow)}
-.contact h3{font-size:1.35rem;margin-bottom:8px}
-.contact p{color:#D5E4DB;margin:0 0 18px;font-size:.95rem}
-.wa{background:var(--wa);color:#fff;text-decoration:none}
-.alt{display:flex;gap:10px;margin-top:10px}
-.alt a{flex:1;text-align:center;color:#fff;text-decoration:none;border:1.5px solid rgba(255,255,255,.35);border-radius:14px;padding:12px 8px;font-weight:600;font-size:.92rem}
-.restart{display:block;margin:18px auto 0;background:none;border:0;color:var(--ink-2);text-decoration:underline;font-size:.9rem}
-.legal{margin-top:26px;font-size:.76rem;color:var(--ink-3);text-align:center;line-height:1.5}
+.prod h3{font-size:1.05rem;letter-spacing:-.02em;margin:2px 0 4px;line-height:1.2}
+.prod p{margin:0;color:var(--ink-2);font-size:.9rem;line-height:1.45}
+.prod .use{display:inline-flex;margin-top:8px;font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--forest-3);background:#E8F3EC;border-radius:99px;padding:4px 10px}
+.contact{margin:26px 0 0;border-radius:28px;padding:24px 20px 20px}
+.contact h3{font-size:1.6rem;color:#fff;margin:10px 0 8px}
+.contact p{color:var(--on-dark-2);margin:0 0 18px;font-size:.95rem}
+.contact .mono{color:var(--mint)}
+.btn-wa{background:var(--wa);color:#fff;box-shadow:0 10px 30px -12px rgba(31,175,87,.7)}
+.alt{display:flex;gap:8px;margin-top:8px}
+.alt a{flex:1;text-align:center;text-decoration:none;border:1px solid var(--glass-line);background:var(--glass);border-radius:99px;padding:12px 8px;font-weight:500;font-size:.92rem;color:var(--on-dark)}
+.restart{display:block;margin:20px auto 0;background:none;border:0;color:var(--ink-2);text-decoration:underline;font-size:.9rem}
+.legal{margin:22px 0 0;padding-bottom:36px;font-size:.74rem;color:var(--ink-3);text-align:center;line-height:1.55}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <header class="top">
-    <div class="avatar" id="avatar"></div>
-    <div class="who"><b id="sellerName"></b><span id="sellerRole"></span></div>
-  </header>
-
-  <!-- ACCUEIL -->
-  <section class="screen on" id="s-home">
-    <div class="hero">
-      <span class="pill">✨ Gratuit · 2 minutes</span>
-      <h1>Trouvez la routine LR faite pour vous</h1>
-      <p>Quelques questions rapides sur votre besoin, votre rythme de vie et votre budget. Vous recevez aussitôt une routine sur mesure.</p>
-      <button class="cta" id="start">Commencer le quiz →</button>
+<!-- ACCUEIL -->
+<section class="screen on dark" id="s-home">
+  <div class="grid-bg"></div>
+  <div class="inner">
+    <div class="topbar">
+      <div class="seller"><div class="avatar" data-avatar></div><div><b data-name></b><span data-role></span></div></div>
+      <div class="live mono"><span class="dot"></span>2 min</div>
     </div>
-    <div class="steps">
-      <div class="step"><b>1</b>Je réponds à quelques questions</div>
-      <div class="step"><b>2</b>Je découvre ma routine</div>
-      <div class="step"><b>3</b>On en parle ensemble</div>
-    </div>
-    <p class="reassure">Sans inscription. Aucune donnée enregistrée.</p>
-  </section>
 
-  <!-- QUESTION -->
-  <section class="screen" id="s-quiz">
-    <div class="progress"><i id="bar"></i></div>
-    <div class="qmeta"><button class="back" id="back">← Retour</button><span id="count"></span></div>
-    <div class="q">
+    <div class="orbit" aria-hidden="true">
+      <div class="ring r3"></div><div class="ring r2"></div><div class="ring r1"></div>
+      <div class="core"><b>LR</b><span class="mono">Diagnostic</span></div>
+      <div class="chip" style="left:2%;top:10%"><i>⚡</i>Énergie</div>
+      <div class="chip" style="right:0;top:22%;animation-delay:-2s"><i>🧠</i>Focus</div>
+      <div class="chip" style="left:0;top:62%;animation-delay:-4s"><i>✨</i>Peau</div>
+      <div class="chip" style="right:4%;top:72%;animation-delay:-1s"><i>🏃</i>Shape</div>
+      <div class="chip" style="left:34%;top:88%;animation-delay:-3s"><i>🦵</i>Mobilité</div>
+    </div>
+
+    <div class="hero-txt">
+      <span class="mono" style="color:var(--mint)">Routine bien-être sur mesure</span>
+      <h1 style="margin-top:10px">Votre corps a sa routine. <em>Trouvons-la.</em></h1>
+      <p>Quelques questions sur votre besoin, votre rythme et votre budget. Notre analyse compose la routine LR qui vous correspond.</p>
+      <button class="btn btn-mint" id="start">Lancer mon diagnostic <span class="arr">→</span></button>
+      <div class="stats">
+        <div><b>2 min</b><span>chrono</span></div>
+        <div><b>6</b><span>questions</span></div>
+        <div><b>1</b><span>routine pour vous</span></div>
+      </div>
+      <div class="checks"><span>Gratuit</span><span>Sans inscription</span><span>Conseil personnalisé</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUESTION -->
+<section class="screen" id="s-quiz">
+  <div class="inner">
+    <div class="qtop">
+      <button class="round" id="back" aria-label="Retour">←</button>
+      <div class="segs" id="segs"></div>
+    </div>
+    <div class="qhead">
+      <span class="mono" id="count"></span>
       <h2 id="qTitle"></h2>
-      <p class="hint" id="qHint"></p>
-      <div class="opts" id="opts"></div>
-      <button class="cta next" id="next" hidden>Continuer →</button>
+      <p id="qHint"></p>
     </div>
-  </section>
+    <div class="opts" id="opts"></div>
+  </div>
+</section>
 
-  <!-- RÉSULTAT -->
-  <section class="screen" id="s-result">
-    <div class="res-head">
-      <span class="pill">🌿 Votre routine</span>
+<!-- ANALYSE -->
+<section class="screen dark" id="s-scan">
+  <div class="grid-bg"></div>
+  <div class="inner">
+    <div class="scanner" aria-hidden="true">
+      <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+      <div class="sweep"></div>
+      <span class="blip" style="left:22%;top:30%"></span>
+      <span class="blip" style="left:74%;top:24%;animation-delay:.5s"></span>
+      <span class="blip" style="left:66%;top:76%;animation-delay:1s"></span>
+      <span class="blip" style="left:18%;top:68%;animation-delay:1.3s"></span>
+      <div class="pct"><div><b id="pct">0 %</b></div></div>
+    </div>
+    <div class="scan-txt">
+      <span class="mono">Analyse en cours</span>
+      <h2>Recherche de votre routine idéale</h2>
+      <div class="scan-prod" id="scanProd"></div>
+    </div>
+    <div class="tags" id="tags"></div>
+    <ul class="steps" id="steps"></ul>
+  </div>
+</section>
+
+<!-- RÉSULTAT -->
+<section class="screen" id="s-result">
+  <div class="dark res-hero">
+    <div class="grid-bg"></div>
+    <div class="inner">
+      <div class="topbar">
+        <div class="seller"><div class="avatar" data-avatar></div><div><b data-name></b><span data-role></span></div></div>
+      </div>
+      <span class="mono"><span class="dot"></span>Diagnostic terminé</span>
       <h2 id="resTitle"></h2>
       <p id="resIntro"></p>
+      <div class="tiles" id="tiles"></div>
     </div>
-    <div id="routine"></div>
-    <div class="contact">
+  </div>
+  <div class="inner">
+    <div class="routine" id="routine"></div>
+
+    <div class="contact dark">
+      <span class="mono">Étape suivante</span>
       <h3>On l'ajuste ensemble ?</h3>
       <p id="contactText"></p>
-      <a class="cta wa" id="waBtn" target="_blank" rel="noopener">
+      <a class="btn btn-wa" id="waBtn" target="_blank" rel="noopener">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.1 5.1 0 0 0 1.1 2.7 11.6 11.6 0 0 0 4.4 3.9c1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
         Recevoir mon conseil sur WhatsApp
       </a>
-      <div class="alt">
-        <a id="callBtn">📞 M'appeler</a>
-        <a id="smsBtn">💬 SMS</a>
-      </div>
+      <div class="alt"><a id="callBtn">📞 M'appeler</a><a id="smsBtn">💬 SMS</a></div>
     </div>
-    <button class="restart" id="restart">Refaire le quiz</button>
-    <p class="legal">Conseillère indépendante. Ces suggestions ne remplacent pas l'avis d'un professionnel de santé. Les compléments alimentaires s'utilisent dans le cadre d'une alimentation variée et équilibrée et d'un mode de vie sain. Demandez conseil en cas de grossesse, d'allaitement ou de traitement.</p>
-  </section>
 
-</div>
+    <button class="restart" id="restart">Refaire le diagnostic</button>
+    <p class="legal">Conseillère indépendante. Ces suggestions ne remplacent pas l'avis d'un professionnel de santé. Les compléments alimentaires s'utilisent dans le cadre d'une alimentation variée et équilibrée et d'un mode de vie sain. Demandez conseil en cas de grossesse, d'allaitement ou de traitement.</p>
+  </div>
+</section>
 
 <script>
 /* =========================================================
@@ -285,34 +409,42 @@ const TITRES = {
    ========================================================= */
 const $ = id => document.getElementById(id);
 const euros = n => n.toFixed(2).replace(".", ",") + " €";
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const calme = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let i = 0, answers = {};
 
-$("sellerName").textContent = CONFIG.prenom;
-$("sellerRole").textContent = CONFIG.role;
-$("avatar").innerHTML = CONFIG.photo ? `<img src="${CONFIG.photo}" alt="">` : CONFIG.prenom.charAt(0);
+document.querySelectorAll("[data-name]").forEach(e => e.textContent = CONFIG.prenom);
+document.querySelectorAll("[data-role]").forEach(e => e.textContent = CONFIG.role);
+document.querySelectorAll("[data-avatar]").forEach(e => e.innerHTML = CONFIG.photo ? `<img src="${CONFIG.photo}" alt="">` : CONFIG.prenom.charAt(0));
 
-function show(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("on", s.id===id)); window.scrollTo({top:0,behavior:"smooth"}); }
+function show(id){
+  document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id));
+  document.querySelector('meta[name="theme-color"]').content = id === "s-quiz" ? "#F2F4EF" : "#0C2219";
+  window.scrollTo(0, 0);
+}
 
 // questions affichées (certaines dépendent des réponses précédentes)
 const QS = () => QUESTIONS.filter(q => !q.si || q.si(answers));
+const pad = n => String(n).padStart(2, "0");
 
 function renderQ(){
   const list = QS(), q = list[i];
-  $("bar").style.width = (i / list.length * 100) + "%";
-  $("count").textContent = `Question ${i+1} sur ${list.length}`;
+  $("segs").innerHTML = list.map((_, k) => `<i class="${k < i ? "done" : k === i ? "cur" : ""}"></i>`).join("");
+  $("count").textContent = `Question ${pad(i+1)} / ${pad(list.length)}`;
   $("qTitle").textContent = q.titre;
   $("qHint").textContent = q.hint;
   $("opts").innerHTML = "";
-  q.opts.forEach(o=>{
+  q.opts.forEach((o, n) => {
     const b = document.createElement("button");
-    b.className = "opt" + (answers[q.id]===o ? " sel" : "");
-    b.innerHTML = `<span class="ico">${o.ico}</span><span><b>${o.label}</b>${o.sub?`<small>${o.sub}</small>`:""}</span>`;
+    b.className = "opt" + (answers[q.id] === o ? " sel" : "");
+    b.style.animationDelay = (n * 45) + "ms";
+    b.innerHTML = `<span class="ico">${o.ico}</span><span class="t"><b>${o.label}</b>${o.sub ? `<small>${o.sub}</small>` : ""}</span><span class="ck">✓</span>`;
     b.onclick = () => {
       answers[q.id] = o;
       QUESTIONS.forEach(x => { if (x.si && !x.si(answers)) delete answers[x.id]; });
-      document.querySelectorAll(".opt").forEach(x=>x.classList.remove("sel"));
+      document.querySelectorAll(".opt").forEach(x => x.classList.remove("sel"));
       b.classList.add("sel");
-      setTimeout(()=>{ i++; i < QS().length ? renderQ() : result(); }, 220);
+      setTimeout(() => { i++; i < QS().length ? renderQ() : scan(); }, 260);
     };
     $("opts").appendChild(b);
   });
@@ -322,65 +454,110 @@ function renderQ(){
    sans dépasser le budget. */
 function choisir(){
   const score = {};
-  Object.values(answers).forEach(o => Object.entries(o.pts||{}).forEach(([k,v]) => score[k]=(score[k]||0)+v));
-  // un gel Aloe Vera fait toujours partie de la routine : la base LR
-  ["aloePeche","aloeMiel","aloeFreedom"].forEach(k => score[k]=(score[k]||0)+2);
+  Object.values(answers).forEach(o => Object.entries(o.pts || {}).forEach(([k, v]) => score[k] = (score[k] || 0) + v));
+  // un gel Aloe Vera fait toujours partie des candidats : la base LR
+  ["aloePeche", "aloeMiel", "aloeFreedom"].forEach(k => score[k] = (score[k] || 0) + 2);
   const max = answers.budget.max * 1.1;   // petite tolérance de 10 %
-  const ordre = Object.entries(score).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).map(([k])=>k);
+  const ordre = Object.entries(score).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).map(([k]) => k);
   const picks = [], groupes = new Set(); let total = 0;
   // body mission : les shakes Figu Active sont toujours proposés, avec l'utilisation adaptée
   if (answers.mission){
-    picks.push({k:"figuActive",...P.figuActive, use:answers.mission.use}); groupes.add("figu"); total += P.figuActive.parJour;
+    picks.push({k:"figuActive", ...P.figuActive, use:answers.mission.use}); groupes.add("figu"); total += P.figuActive.parJour;
   }
   for (const k of ordre){
     const p = P[k];
     if (!p || groupes.has(p.groupe)) continue;
     if (total + p.parJour > max) continue;
-    picks.push({k,...p}); groupes.add(p.groupe); total += p.parJour;
+    picks.push({k, ...p}); groupes.add(p.groupe); total += p.parJour;
   }
   // si rien ne rentre dans le budget, on propose quand même le produit le plus adapté
-  if (!picks.length && ordre.length){ const k = ordre[0]; picks.push({k,...P[k]}); total = P[k].parJour; }
+  if (!picks.length && ordre.length){ const k = ordre[0]; picks.push({k, ...P[k]}); total = P[k].parJour; }
   return { picks, total };
+}
+
+/* Écran d'analyse : effet « scan » avant le résultat */
+async function scan(){
+  show("s-scan");
+  const tags = [answers.mission || answers.objectif, answers.metier, answers.sport, answers.budget].filter(Boolean).map(o => o.label);
+  const etapes = ["Lecture de votre besoin principal", "Analyse de votre rythme et de votre activité",
+                  "Croisement avec la gamme LR", "Optimisation selon votre budget", "Composition de votre routine"];
+  $("tags").innerHTML = ""; $("pct").textContent = "0 %";
+  $("steps").innerHTML = etapes.map(t => `<li><i>✓</i>${t}</li>`).join("");
+  const lis = [...$("steps").children], noms = Object.values(P).map(p => p.nom);
+  const pas = calme ? 120 : 720, debut = performance.now(), duree = pas * etapes.length;
+
+  let n = 0;
+  const flick = setInterval(() => { $("scanProd").textContent = "› " + noms[n++ % noms.length]; }, 110);
+  const tick = () => {
+    const t = Math.min(1, (performance.now() - debut) / duree);
+    $("pct").textContent = Math.round(t * 100) + " %";
+    if (t < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+
+  for (let k = 0; k < etapes.length; k++){
+    lis[k].className = "run";
+    if (tags[k]){ const s = document.createElement("span"); s.textContent = tags[k]; $("tags").appendChild(s); }
+    await wait(pas);
+    lis[k].className = "ok";
+  }
+  clearInterval(flick);
+  $("pct").textContent = "100 %";
+  $("scanProd").textContent = "› Routine trouvée";
+  await wait(calme ? 100 : 500);
+  result();
 }
 
 function result(){
   const { picks, total } = choisir();
-  const obj = answers.objectif.k;
-  const titre = answers.mission ? answers.mission.titre : TITRES[obj];
+  const titre = answers.mission ? answers.mission.titre : TITRES[answers.objectif.k];
   $("resTitle").textContent = titre;
-  $("resIntro").textContent = CONFIG.afficherPrix
-    ? `${picks.length} produit${picks.length>1?"s":""} choisi${picks.length>1?"s":""} pour vous, pour environ ${euros(total)} par jour.`
-    : `${picks.length} produit${picks.length>1?"s":""} choisi${picks.length>1?"s":""} selon vos réponses.`;
+  $("resIntro").textContent = `${picks.length} produit${picks.length > 1 ? "s" : ""} sélectionné${picks.length > 1 ? "s" : ""} pour votre profil.`;
 
-  const groups = [["matin","☀️ Le matin"],["journée","🍽️ Dans la journée"],["soir","🌙 Le soir"]];
-  $("routine").innerHTML = groups.map(([m,label])=>{
-    const list = picks.filter(p=>p.moment===m);
-    if(!list.length) return "";
-    return `<div class="moment">${label}</div>` + list.map(p=>`
-      <div class="prod">
-        <div class="pic">${p.img?`<img src="${p.img}" alt="">`:p.emoji}</div>
+  const besoin = answers.mission ? answers.mission.label : answers.objectif.label;
+  const tiles = [
+    ["Besoin", besoin], ["Rythme", answers.rythme.label], ["Sport", answers.sport.label]
+  ];
+  let html = tiles.map(([l, v], n) => `<div class="tile" style="animation-delay:${n*80}ms"><span class="mono">${l}</span><b>${v}</b></div>`).join("");
+  if (CONFIG.afficherPrix){
+    const ratio = Math.min(100, total / answers.budget.max * 100);
+    html += `<div class="tile" style="animation-delay:240ms"><span class="mono">Votre routine</span><b>≈ ${euros(total)} / jour</b><div class="meter"><i data-w="${ratio}"></i></div></div>`;
+  } else {
+    html += `<div class="tile" style="animation-delay:240ms"><span class="mono">Moment clé</span><b>${answers.moment.label}</b></div>`;
+  }
+  $("tiles").innerHTML = html;
+
+  const groups = [["matin", "☀ Matin"], ["journée", "◐ Journée"], ["soir", "☾ Soir"]];
+  let d = 0;
+  $("routine").innerHTML = groups.map(([m, label]) => {
+    const list = picks.filter(p => p.moment === m);
+    if (!list.length) return "";
+    return `<div class="moment mono">${label}</div>` + list.map(p => `
+      <div class="prod" style="animation-delay:${300 + (d++) * 110}ms">
+        <div class="pic">${p.img ? `<img src="${p.img}" alt="">` : p.emoji}</div>
         <div><h3>${p.nom}</h3><p>${p.desc}</p><span class="use">${p.use}</span></div>
       </div>`).join("");
   }).join("");
 
   $("contactText").textContent = `Je suis ${CONFIG.prenom}. Envoyez-moi votre résultat : je vous réponds personnellement avec les conseils d'utilisation et les offres du moment.`;
 
-  const msg = `Bonjour ${CONFIG.prenom} ! J'ai fait le quiz : ${titre.replace("Votre ","ma ")}.\n` +
-    `Produits proposés : ${picks.map(p=>p.nom).join(", ")}.\n` +
-    `Mon profil : ${["objectif","mission","metier","rythme","sport","moment"].filter(id=>answers[id]).map(id=>answers[id].label).join(" · ")}.\n` +
+  const msg = `Bonjour ${CONFIG.prenom} ! J'ai fait le diagnostic : ${titre.replace("Votre ", "ma ")}.\n` +
+    `Produits proposés : ${picks.map(p => p.nom).join(", ")}.\n` +
+    `Mon profil : ${["objectif","mission","metier","rythme","sport","moment"].filter(id => answers[id]).map(id => answers[id].label).join(" · ")}.\n` +
     `Mon budget : ${answers.budget.label.toLowerCase()}.\n` +
     `J'aimerais en savoir plus 🙂`;
   $("waBtn").href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
   $("callBtn").href = `tel:${CONFIG.telephone}`;
   $("smsBtn").href = `sms:${CONFIG.telephone}?&body=${encodeURIComponent(msg)}`;
 
-  $("bar").style.width = "100%";
   show("s-result");
+  requestAnimationFrame(() => requestAnimationFrame(() =>
+    document.querySelectorAll(".meter i").forEach(e => e.style.width = e.dataset.w + "%")));
 }
 
-$("start").onclick = () => { i=0; answers={}; renderQ(); show("s-quiz"); };
-$("back").onclick = () => { if(i===0){ show("s-home"); } else { i--; renderQ(); } };
-$("restart").onclick = () => { i=0; answers={}; show("s-home"); };
+$("start").onclick = () => { i = 0; answers = {}; renderQ(); show("s-quiz"); };
+$("back").onclick = () => { if (i === 0){ show("s-home"); } else { i--; renderQ(); } };
+$("restart").onclick = () => { i = 0; answers = {}; show("s-home"); };
 </script>
 </body>
 </html>
