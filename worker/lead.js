@@ -40,24 +40,29 @@ export async function handleLead(request, env) {
 
   const lignes = [
     ["Prénom", prenom], ["Téléphone", telephone || "non renseigné"], ["Email", email || "non renseigné"],
-    ...profil,
-    ["Coût routine (avec abonnements)", total ? `≈ ${total} par mois` : ""],
+    ...profil
+  ].filter(([, v]) => v);
+  const couts = [
+    ["Coût estimé", total ? `≈ ${total} par mois (avec abonnements)` : ""],
     ["Économie abonnement annoncée", eco ? `≈ ${eco} par mois` : ""]
   ].filter(([, v]) => v);
+  const ligne = ([k, v]) => `<tr><td style="padding:7px 10px 7px 0;color:#8A968F;border-bottom:1px solid #E2E7E1;width:38%">${esc(k)}</td><td style="padding:7px 0;border-bottom:1px solid #E2E7E1"><b>${esc(v)}</b></td></tr>`;
 
   const html = `
   <div style="font-family:Arial,sans-serif;max-width:560px;color:#0D1A14">
     <h2 style="margin:0 0 4px">Nouveau contact : ${esc(prenom)}</h2>
     <p style="margin:0 0 18px;color:#4A5A52">${esc(titre)}</p>
     <table style="border-collapse:collapse;width:100%">
-      ${lignes.map(([k, v]) => `<tr><td style="padding:7px 10px 7px 0;color:#8A968F;border-bottom:1px solid #E2E7E1;width:38%">${esc(k)}</td><td style="padding:7px 0;border-bottom:1px solid #E2E7E1"><b>${esc(v)}</b></td></tr>`).join("")}
+      ${lignes.map(ligne).join("")}
     </table>
     <h3 style="margin:22px 0 8px">Routine proposée</h3>
     <ul style="margin:0;padding-left:18px">${routine.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
+    ${couts.length ? `<table style="border-collapse:collapse;width:100%;margin-top:18px">${couts.map(ligne).join("")}</table>` : ""}
     ${telephone ? `<p style="margin:24px 0 0"><a href="tel:${esc(telephone.replace(/[^+0-9]/g, ""))}" style="background:#0C2219;color:#A6EBC1;padding:10px 16px;border-radius:99px;text-decoration:none">Appeler ${esc(prenom)}</a></p>` : ""}
   </div>`;
   const text = `Nouveau contact : ${prenom}\n${titre}\n\n` + lignes.map(([k, v]) => `${k} : ${v}`).join("\n") +
-               `\n\nRoutine proposée :\n` + routine.map(p => `- ${p}`).join("\n");
+               `\n\nRoutine proposée :\n` + routine.map(p => `- ${p}`).join("\n") +
+               (couts.length ? "\n\n" + couts.map(([k, v]) => `${k} : ${v}`).join("\n") : "");
 
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",
