@@ -1,0 +1,12 @@
+{
+  "name": "routine-2min",
+  "private": true,
+  "description": "Diagnostic « Votre routine LR en 2 minutes » (page + envoi des contacts par email, sur Cloudflare Workers)",
+  "scripts": {
+    "dev": "wrangler dev --port 8790",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.40.0"
+  }
+}

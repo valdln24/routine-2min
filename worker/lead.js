@@ -2,7 +2,7 @@
  * POST /api/lead
  * Reçoit le formulaire « Être recontacté » du quiz et vous l'envoie par email (via Resend).
  *
- * Réglages dans Cloudflare › Pages › routine-2min › Paramètres › Variables et secrets :
+ * Réglages dans Cloudflare › Workers et Pages › routine-2min › Paramètres › Variables et secrets :
  *   RESEND_API_KEY  (Secret)  la clé Resend, commence par re_
  *   LEAD_TO         (Texte)   l'adresse qui reçoit les contacts
  *   EMAIL_FROM      (Texte, facultatif)  expéditeur ; par défaut « Diagnostic LR <onboarding@resend.dev> »
@@ -12,7 +12,7 @@ const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&
 const clip = (v, n) => String(v ?? "").trim().slice(0, n);
 const json = (data, status = 200) => new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json; charset=utf-8" } });
 
-export async function onRequestPost({ request, env }) {
+export async function handleLead(request, env) {
   let body;
   try { body = await request.json(); } catch { return json({ ok:false, error:"Requête invalide." }, 400); }
 
