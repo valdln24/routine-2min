@@ -349,14 +349,15 @@ const P = {
                  desc:"L'aloe vera associé au miel, pour une routine santé au naturel.", use:"Un petit verre le matin" },
   aloeFreedom: { nom:"Gel à boire Aloe Vera Freedom", groupe:"aloe", parJour:1.5, moment:"matin", code:"AV",
                  desc:"La formule pensée pour les articulations et la mobilité.", use:"Un petit verre le matin" },
-  mindMaster:  { nom:"Mind Master", groupe:"mind", parJour:2.0, moment:"matin", code:"MM",
-                 desc:"Pour accompagner les journées chargées et garder le rythme.", use:"Le matin" },
-  mindRouge:   { nom:"Mind Master Rouge", groupe:"mind", parJour:2.0, moment:"matin", code:"MM",
-                 desc:"La version aux fruits rouges, pour l'énergie au quotidien.", use:"Le matin" },
-  mindGold:    { nom:"Mind Master Gold", groupe:"mind", parJour:2.5, moment:"matin", code:"MM",
-                 desc:"Pour les esprits exigeants : concentration et performance.", use:"Le matin" },
-  mindExtreme: { nom:"Mind Master Extreme", groupe:"mind", parJour:2.5, moment:"matin", code:"MM",
-                 desc:"Pour les gros efforts et les sportifs.", use:"Avant l'effort ou le matin" },
+  // prix boutique LR : 19,29 € les 7 jours
+  mindRouge:   { nom:"Mind Master Formula Red", groupe:"mind", parJour:2.76, moment:"matin", code:"MM",
+                 desc:"Avec vitamines et oligo-éléments, pour l'énergie au quotidien.", use:"Le matin" },
+  // prix boutique LR : 24,79 € les 7 jours
+  mindGold:    { nom:"Mind Master Formula Gold", groupe:"mind", parJour:3.54, moment:"matin", code:"MM",
+                 desc:"Au curcuma et au thé blanc, pour les journées les plus exigeantes.", use:"Le matin" },
+  // prix boutique LR : 35,69 € les 14 sticks
+  mindExtreme: { nom:"Mind Master Extreme", groupe:"mind", parJour:2.55, moment:"matin", code:"MM",
+                 desc:"En sticks faciles à emporter, pour les gros efforts et les sportifs.", use:"Un stick avant l'effort" },
   vitaActive:  { nom:"Vita Active", groupe:"vita", parJour:0.9, moment:"matin", code:"VA",
                  desc:"Un concentré de fruits rouges riche en vitamines.", use:"Le matin" },
   superOmega:  { nom:"Super Omega", groupe:"omega", parJour:0.8, moment:"journée", code:"Ω3",
@@ -374,7 +375,7 @@ const P = {
 const QUESTIONS = [
   { id:"objectif", titre:"Quel est votre plus gros besoin ?", hint:"Choisissez celui qui compte le plus pour vous.",
     opts:[
-      { k:"energie",   label:"Énergie",              sub:"Je me sens vite à plat", pts:{ mindRouge:5, mindMaster:4, vitaActive:4, aloePeche:2 } },
+      { k:"energie",   label:"Énergie",              sub:"Je me sens vite à plat", pts:{ mindRouge:6, vitaActive:4, aloePeche:2 } },
       { k:"peau",      label:"Peau",                 sub:"Éclat, rides, fermeté", pts:{ zeitgard:6, aloePeche:2, superOmega:2 } },
       { k:"shape",     label:"Shape · Body mission",  sub:"Perte de poids, rééquilibrage, prise de masse", pts:{ figuActive:3, aloePeche:3, vitaActive:1, superOmega:1 } },
       { k:"biohacking",  label:"Biohacking",           sub:"Concentration, performance, optimiser ma santé", pts:{ mindGold:6, superOmega:4, vitaActive:2 } },
@@ -388,35 +389,35 @@ const QUESTIONS = [
         titre:"Votre routine Perte de poids",  use:"À la place d'un repas" },
       { k:"reequi", label:"Rééquilibrage",   sub:"Mieux manger, retrouver de bonnes habitudes", pts:{ vitaActive:2, superOmega:1 },
         titre:"Votre routine Rééquilibrage",   use:"Au petit-déjeuner ou en collation" },
-      { k:"masse",  label:"Prise de masse",  sub:"Prendre du muscle avec le sport", pts:{ mindExtreme:3, superOmega:2 },
+      { k:"masse",  label:"Prise de masse",  sub:"Prendre du muscle avec le sport", pts:{ mindExtreme:5, superOmega:2 },
         titre:"Votre routine Prise de masse",  use:"En plus des repas, après le sport" }
     ]},
   { id:"metier", titre:"Que faites-vous dans la vie ?", hint:"",
     opts:[
       { k:"bureau",  label:"Bureau, écrans",         sub:"Beaucoup assis·e, beaucoup de concentration", pts:{ mindGold:2, superOmega:2 } },
-      { k:"physique",  label:"Métier physique",        sub:"Debout, port de charges, terrain", pts:{ aloeFreedom:3, mindMaster:2 } },
+      { k:"physique",  label:"Métier physique",        sub:"Debout, port de charges, terrain", pts:{ aloeFreedom:3, mindRouge:2 } },
       { k:"parent",  label:"Parent à temps plein", sub:"Les enfants, la maison, sans pause", pts:{ mindRouge:2, vitaActive:2 } },
-      { k:"entrepreneur",  label:"Indépendant·e, entrepreneur·e", sub:"Des journées sans fin", pts:{ mindGold:3, mindMaster:1 } },
+      { k:"entrepreneur",  label:"Indépendant·e, entrepreneur·e", sub:"Des journées sans fin", pts:{ mindGold:3, mindRouge:1 } },
       { k:"etudiant",  label:"Étudiant·e",             sub:"Cours, révisions, examens", pts:{ mindGold:2, vitaActive:1 } },
       { k:"retraite",  label:"Retraité·e",             sub:"Du temps pour moi", pts:{ aloeFreedom:2, aloeMiel:2, superOmega:1 } }
     ]},
   { id:"rythme", titre:"Comment décririez-vous votre rythme ?", hint:"",
     opts:[
       { k:"calme",   label:"Plutôt tranquille",  sub:"", pts:{ aloeMiel:1 } },
-      { k:"soutenu", label:"Soutenu",            sub:"Bien rempli, mais ça va", pts:{ mindMaster:2, vitaActive:1 } },
-      { k:"fou",     label:"À 100 à l'heure", sub:"Je cours tout le temps", pts:{ mindRouge:3, mindMaster:3, mindGold:1 } }
+      { k:"soutenu", label:"Soutenu",            sub:"Bien rempli, mais ça va", pts:{ mindRouge:2, vitaActive:1 } },
+      { k:"fou",     label:"À 100 à l'heure", sub:"Je cours tout le temps", pts:{ mindRouge:4, mindGold:1 } }
     ]},
   { id:"sport", titre:"Combien de séances de sport par semaine ?", hint:"Marche rapide, salle, course, vélo, danse… tout compte.",
     opts:[
       { k:"0",  label:"Aucune pour l'instant", sub:"", pts:{ aloePeche:1 } },
       { k:"1",  label:"1 à 2 séances",        sub:"", pts:{ vitaActive:1 } },
       { k:"3",  label:"3 à 4 séances",        sub:"", pts:{ mindExtreme:3, superOmega:1, aloeFreedom:1 } },
-      { k:"5",  label:"5 séances ou plus",    sub:"", pts:{ mindExtreme:5, aloeFreedom:2, superOmega:2 } }
+      { k:"5",  label:"5 séances ou plus",    sub:"", pts:{ mindExtreme:6, aloeFreedom:2, superOmega:2 } }
     ]},
   { id:"moment", titre:"Quel est le moment le plus dur de votre journée ?", hint:"",
     opts:[
-      { k:"reveil",  label:"Le réveil",                 sub:"Difficile de démarrer", pts:{ mindRouge:3, mindMaster:2, vitaActive:1 } },
-      { k:"aprem",   label:"Le coup de barre de l'après-midi", sub:"", pts:{ mindMaster:3, mindRouge:2 } },
+      { k:"reveil",  label:"Le réveil",                 sub:"Difficile de démarrer", pts:{ mindRouge:4, vitaActive:1 } },
+      { k:"aprem",   label:"Le coup de barre de l'après-midi", sub:"", pts:{ mindRouge:4, vitaActive:1 } },
       { k:"soir",    label:"La fin de journée",         sub:"Je rentre épuisé·e, courbatures", pts:{ aloeFreedom:2, vitaActive:2 } },
       { k:"concentr",  label:"Rester concentré·e",        sub:"Je décroche vite", pts:{ mindGold:3, superOmega:2 } },
       { k:"aucun",   label:"Aucun, tout roule",         sub:"", pts:{} }
